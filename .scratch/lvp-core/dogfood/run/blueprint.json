@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-07T09:00:09.859Z",
+  "project": {
+    "slug": "futsal-court-booking",
+    "name": "Futsal Court Booking",
+    "user_language": "id",
+    "idea_summary_en": "A booking app for small futsal venues with a real-time slot schedule and a 30% down payment (DP) recorded in-app: players book from a phone link with no account, pay the DP by manual bank transfer, and the owner confirms it from a laptop — replacing the paper notebook and WhatsApp chats that caused double-booked slots.",
+    "status": "bundled"
+  },
+  "stack": {
+    "primary": "next-supabase",
+    "components": [
+      "Next.js",
+      "Supabase",
+      "Vercel"
+    ],
+    "reasons_ref": "DECISIONS.md#D-019"
+  },
+  "features": [
+    {
+      "id": "F-01",
+      "name": "Real-time slot booking",
+      "in_mvp": true,
+      "flows_ref": "USER_FLOWS.md#F-01"
+    },
+    {
+      "id": "F-02",
+      "name": "30% down payment (DP) + admin confirmation",
+      "in_mvp": true,
+      "flows_ref": "USER_FLOWS.md#F-02"
+    },
+    {
+      "id": "F-03",
+      "name": "Court & schedule management (admin)",
+      "in_mvp": true,
+      "flows_ref": "USER_FLOWS.md#F-03"
+    },
+    {
+      "id": "F-04",
+      "name": "Daily report (admin)",
+      "in_mvp": true,
+      "flows_ref": "USER_FLOWS.md#F-04"
+    }
+  ],
+  "decisions_count": {
+    "confirmed": 8,
+    "assumed": 13
+  },
+  "milestones": [
+    {
+      "id": "M0",
+      "goal": "Walking skeleton: real booking locks a real slot at the real deployed URL (deploy + F-01 end to end)",
+      "verified": false,
+      "acceptance_count": 5,
+      "ref": "MILESTONES.md#M0"
+    },
+    {
+      "id": "M1",
+      "goal": "Owner logs in and self-manages courts, hours, prices, blocked slots; players see changes immediately",
+      "verified": false,
+      "acceptance_count": 4,
+      "ref": "MILESTONES.md#M1"
+    },
+    {
+      "id": "M2",
+      "goal": "Manual DP flow: amount shown, proof uploaded, admin confirms/rejects, status flips (D-011/L-01: no online payment in v1)",
+      "verified": false,
+      "acceptance_count": 5,
+      "ref": "MILESTONES.md#M2"
+    },
+    {
+      "id": "M3",
+      "goal": "Daily report from one truthful source + final re-verification of the M0 deploy",
+      "verified": false,
+      "acceptance_count": 5,
+      "ref": "MILESTONES.md#M3"
+    }
+  ],
+  "costs": {
+    "monthly_usd": 0,
+    "one_time_usd": 0,
+    "table_ref": "RESEARCH.md#cost-table"
+  },
+  "capabilities": [
+    {
+      "name": "pm-skills interview patterns",
+      "kind": "skill",
+      "license": "Apache-2.0",
+      "nc": false,
+      "install": "npx skills add product-on-purpose/pm-skills"
+    },
+    {
+      "name": "OpenSpec pattern (structure reference)",
+      "kind": "skill",
+      "license": "MIT",
+      "nc": false,
+      "install": "npx skills add Fission-AI/OpenSpec"
+    },
+    {
+      "name": "SimpleEnglish (document-rule subset)",
+      "kind": "skill",
+      "license": "MIT",
+      "nc": false,
+      "install": "npx skills add AminBlg/SimpleEnglish"
+    },
+    {
+      "name": "humanizer (de-slop pass)",
+      "kind": "skill",
+      "license": "MIT",
+      "nc": false,
+      "install": "npx skills add blader/humanizer"
+    },
+    {
+      "name": "karpathy-guidelines",
+      "kind": "skill",
+      "license": "MIT",
+      "nc": false,
+      "install": "npx skills add multica-ai/andrej-karpathy-skills"
+    },
+    {
+      "name": "ponytail",
+      "kind": "skill",
+      "license": "MIT",
+      "nc": false,
+      "install": "npx skills add DietrichGebert/ponytail"
+    },
+    {
+      "name": "competitor-analysis / web search",
+      "kind": "skill",
+      "license": "MIT",
+      "nc": false,
+      "install": "npx skills add browserbase/skills"
+    },
+    {
+      "name": "Playwright MCP",
+      "kind": "mcp",
+      "license": "MIT",
+      "nc": false,
+      "install": "configure the Playwright MCP server"
+    },
+    {
+      "name": "agents.md spec",
+      "kind": "skill",
+      "license": "spec text, permissive",
+      "nc": false,
+      "install": "npx skills add agentsmd/agents.md"
+    }
+  ],
+  "pointers": {
+    "agents": "AGENTS.md",
+    "overview": "OVERVIEW.md",
+    "verification": "VERIFICATION.md",
+    "state": ".lvp/state.json"
+  }
+}

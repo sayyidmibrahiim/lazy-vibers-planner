@@ -1,0 +1,639 @@
+{
+  "schema_version": 1,
+  "project": {
+    "slug": "futsal-court-booking",
+    "name": "Futsal Court Booking",
+    "idea_raw": "Aplikasi booking lapangan futsal dengan DP online dan jadwal real-time. Pemilik lapangan kelolanya masih pakai buku tulis, sering bentrok jadwal. Pemain booking dari HP, admin kelola dari laptop. Pengen ada DP 30% biar nggak jadi-no-show.",
+    "user_language": "id",
+    "created_at": "2026-11-07T08:03:22Z",
+    "status": "bundled"
+  },
+  "pipeline": {
+    "current_section": "S9",
+    "sections": {
+      "S0": {
+        "status": "done",
+        "record": "S0-intake.md",
+        "started_at": "2026-11-07T08:03:22Z",
+        "completed_at": "2026-11-07T08:04:40Z",
+        "answers": {
+          "S0.q1": {
+            "q": "Ceritakan semua yang ada di kepala Anda soal ide ini — apa itu, untuk siapa, dan kenapa Anda menginginkannya. Boleh beberapa paragraf; tidak perlu dirapikan, tuangkan saja.",
+            "a": "Aplikasi booking lapangan futsal dengan DP online dan jadwal real-time. Pemilik lapangan kelolanya masih pakai buku tulis, sering bentrok jadwal. Pemain booking dari HP, admin kelola dari laptop. Pengen ada DP 30% biar nggak jadi-no-show.",
+            "skipped": false
+          },
+          "S0.q2": {
+            "q": "Saya mendeteksi Bahasa Indonesia — seluruh percakapan kita akan saya jalankan dalam bahasa ini. Koreksi kalau saya salah.",
+            "a": "Betul, Bahasa Indonesia saja.",
+            "skipped": false
+          },
+          "S0.q3": {
+            "q": "Nama kerja: Futsal Court Booking (slug: futsal-court-booking). Pakai, atau ganti?",
+            "a": "Pakai saja, sudah pas.",
+            "skipped": false
+          }
+        }
+      },
+      "S1": {
+        "status": "done",
+        "record": "S1-context.md",
+        "started_at": "2026-11-07T08:05:14Z",
+        "completed_at": "2026-11-07T08:09:12Z",
+        "answers": {
+          "S1.q1": {
+            "q": "Bayangkan seseorang memakai aplikasi ini — kejadian menjengkelkan apa yang baru saja menimpa mereka tepat sebelum mereka membuka aplikasinya?",
+            "a": "Tadi sore tepatnya. Dua tim booking slot jam 8 malam untuk Sabtu. Yang satu sudah transfer DP dan kirim buktinya ke WhatsApp saya, yang satu belum. Saya lupa mana yang sudah bayar karena catatan di buku telat saya coret. Pas Sabtu malam dua-duanya datang. Satu tim akhirnya pulang padahal sudah bawa sepatu. Malu, dan rugi dua kali.",
+            "skipped": false
+          },
+          "S1.q2": {
+            "q": "Siapa yang mengalami masalah ini? Gambarkan satu jenis orang nyata — apa yang mereka lakukan, bukan jabatan.",
+            "a": "Pemilik lapangan futsal kecil seperti saya — punya 2 lapangan, ada kantin kecil, pegawainya cuma satu yang sekalian jadi kasir. Bukan orang IT, semuanya masih manual. Terus pemainnya: anak muda 20-35 tahun yang main rutin tiap minggu, semua urusan lewat HP.",
+            "skipped": false
+          },
+          "S1.q3": {
+            "q": "Enam bulan setelah aplikasi ini ada, apa yang berubah di minggu Anda sampai Anda bilang membangunnya itu berharga?",
+            "a": "Enam bulan lagi, tiap Sabtu malam saya bisa duduk santai di kantin tanpa buka buku dan tanpa telusuri chat. Jadwal besok kelihatan rapi di layar, DP sudah tercatat otomatis, dan tidak ada lagi dua tim di satu slot. Kalau seminggu penuh tanpa bentrok, itu berhasil.",
+            "skipped": false
+          },
+          "S1.q4": {
+            "q": "Ini sebaiknya hidup di mana — situs web, aplikasi HP, atau keduanya?",
+            "a": "Pemain harus bisa booking dari HP, jadi tampilan di HP wajib nyaman. Saya kelola dari laptop, jadi halaman admin enaknya di layar besar. Dua-duanya lewat web saja — pemain buka lewat link, nggak perlu install dari Play Store.",
+            "skipped": false
+          },
+          "S1.q5": {
+            "q": "Hari ini Anda menangani urusan ini bagaimana — kertas, pesan chat, spreadsheet, atau ingatan?",
+            "a": "Sekarang pemain chat WhatsApp: 'Bang, Sabtu jam 8 ada?' Saya catat di buku tulis: nama, tanggal, jam. DP-nya transfer bank manual, saya cek satu-satu di m-banking, kalau sudah masuk saya coret di buku. Seringnya saya lupa coret, atau bukti transfer kecampur di ratusan chat grup komunitas.",
+            "skipped": false
+          },
+          "S1.q6": {
+            "q": "Di bulan-bulan pertama, kira-kira ini untuk sekitar lima orang, lima puluh, atau lima ratus?",
+            "a": "Pemain yang balik-main mungkin 80-150 orang. Per minggu sekitar 20-30 booking, paling ramai Jumat-Malam Sabtu. Dua lapangan, tiap slot 1 jam dari jam 8 pagi sampai 11 malam.",
+            "skipped": false
+          },
+          "S1.q7": {
+            "q": "Bahasa apa yang akan dilihat orang di layar aplikasinya sendiri?",
+            "a": "Bahasa Indonesia santai. Pemainnya orang lokal, istilahnya pun Indonesia: 'DP', 'jadwal', 'lapangan'. Sebisa mungkin hindari istilah teknis Inggris di layar.",
+            "skipped": false
+          },
+          "S1.q8": {
+            "q": "Apakah persetujuan orang lain ikut berpengaruh di sini — bos, pasangan, komunitas, regulator?",
+            "a": "Nggak ada bos atau regulator. Ister ikut setuju, asal uangnya aman dan nggak ribet. Kalau nanti ada pembayaran online, yang perlu disetujui cuma syarat penyedia pembayarannya.",
+            "skipped": false
+          },
+          "S1.q9": {
+            "q": "Apa tugas nyata pertama yang harus bisa diselesaikan seseorang di hari pertama — dari awal sampai akhir?",
+            "a": "Hari pertama yang saya mau: seorang pemain buka link, pilih lapangan, pilih slot Sabtu jam 8 malam, bayar DP 30% online, terus dapat konfirmasi. Di sisi saya, jadwal Sabtu itu langsung terkunci dan tercatat siapa yang booking. Dari pemain klik sampai saya lihat tercatat — itu tugas hari pertama.",
+            "skipped": false
+          }
+        }
+      },
+      "S2": {
+        "status": "done",
+        "record": "S2-kondisi.md",
+        "started_at": "2026-11-07T08:09:26Z",
+        "completed_at": "2026-11-07T08:13:34Z",
+        "answers": {
+          "S2.q1": {
+            "q": "HP dan komputer apa yang Anda dan calon pemakai ini bawa sehari-hari — iPhone atau Android, Windows atau Mac?",
+            "a": "Saya sendiri pakai laptop Windows dan HP Android. Untuk pemain, kebanyakan HP Android, tapi ada beberapa yang iPhone. Yang kelola cuma saya sendiri, dari laptop.",
+            "skipped": false
+          },
+          "S2.q2": {
+            "q": "Apakah Anda sudah membayar apa pun yang berhubungan dengan ide ini — situs, server, nama domain, akun app-store?",
+            "a": "Belum ada. Belum ada website, belum pernah bayar hosting atau domain, nggak punya akun app-store. Selama ini semua masih WhatsApp dan buku tulis.",
+            "skipped": false
+          },
+          "S2.q3": {
+            "q": "Berapa paling banyak yang bisa Anda belanjakan untuk ini tiap bulan sebelum terasa berat?",
+            "a": "Maksimal Rp 100.000/bulan. Kalau lebih dari itu saya nggak sanggup. Sarana saya cuma laptop dan HP, belum punya domain.",
+            "skipped": false
+          },
+          "S2.q4": {
+            "q": "Mau alamat sendiri seperti myidea.com, atau alamat gratis seperti myidea.vercel.app sudah cukup?",
+            "a": "Berapa kalau harus bayar? ... Kalau ada biaya tahunan segitu, pakai yang gratis dulu saja. Nanti kalau usahanya sudah jalan, baru saya pikirkan alamat sendiri.",
+            "skipped": false
+          },
+          "S2.q5": {
+            "q": "Kalau memperbaiki atau memperbarui ini berarti mengetik perintah di jendela hitam, oke tidak — atau pembaruan harusnya jalan sendiri?",
+            "a": "Nggak mau sama sekali. Saya nggak ngerti yang namanya perintah. Harusnya tinggal buka dan dipakai; pembaruan juga jalan sendiri.",
+            "skipped": false
+          },
+          "S2.q6": {
+            "q": "Lebih suka bayar sekali di muka, atau sedikit-sedikit tiap bulan?",
+            "a": "Bulanan kecil lebih enak, bisa berhenti kapan saja kalau nggak cocok. Bayar mahal sekali di depan berat buat saya.",
+            "skipped": false
+          },
+          "S2.q7": {
+            "q": "Adakah alasan data harus berada di negara tertentu — aturan kantor, aturan sekolah, atau hukum? Atau 'di tempat yang aman' saja sudah cukup?",
+            "a": "Nggak ada syarat negara. Yang penting datanya aman dan tidak hilang.",
+            "skipped": false
+          },
+          "S2.q8": {
+            "q": "Berapa lama waktu yang bisa Anda luangkan tiap minggu untuk menjaga ini tetap hidup — hitungan menit, satu jam, atau lebih?",
+            "a": "Paling banter 1 jam seminggu. Kalau lagi ramai, bisa kurang dari itu.",
+            "skipped": false
+          },
+          "S2.q9": {
+            "q": "Alamat email mana yang harus menerima tagihan dan reset password untuk layanan-layanan ini?",
+            "a": "Email pribadi saya: budisantoso88@gmail.com. — (usulan: email khusus proyek lebih rapi dan tidak bercampur surat pribadi) — Oh boleh. Nanti saya bikin khusus: bookingfutsal.id@gmail.com, pakai itu saja.",
+            "skipped": false
+          },
+          "S2.q10": {
+            "q": "Bisakah Anda bayar online dengan kartu dari bank Anda, dan bank itu di negara mana?",
+            "a": "Bisa. Kartu debit BCA, bank-nya di Indonesia. Kadang pakai GoPay juga, tapi untuk langganan biasanya pakai kartu.",
+            "skipped": false
+          }
+        }
+      },
+      "S3": {
+        "status": "done",
+        "started_at": "2026-11-07T08:25:40.543Z",
+        "answers": {
+          "S3.q1": {
+            "q": "Apakah orang harus punya akun dulu di aplikasi ini sebelum bisa memakainya, atau siapa pun yang punya tautan bisa langsung mulai?",
+            "a": "Admin — saya — perlu login dong, soalnya yang pegang uang dan jadwal. Tapi pemain nggak usah bikin akun, ribet. Cukup isi nama dan nomor HP pas booking.",
+            "skipped": false
+          },
+          "S3.q2": {
+            "q": "Data apa saja tentang seseorang yang akan disimpan aplikasi ini — nama, nomor HP, foto, lokasi, atau hal lain tentang mereka?",
+            "a": "Namanya, nomor HP-nya, jadwal bookingnya, dan status DP-nya — sudah, nggak perlu lain-lain. Nggak ada foto KTP atau apalah.",
+            "skipped": false
+          },
+          "S3.q3": {
+            "q": "Apakah ada uang yang berpindah di dalam aplikasi ini — jual-beli, langganan, tip, atau tidak ada sama sekali?",
+            "a": "Ada — DP 30% tiap booking. Pengennya sih DP-nya online langsung, biar pemain tinggal bayar dan saya tinggal lihat. Nggak ada jualan lain.",
+            "skipped": false
+          },
+          "S3.q4": {
+            "q": "Untuk login admin: mau masuk pakai akun yang sudah ada — misalnya akun Google — atau username dan password baru khusus aplikasi ini?",
+            "a": "Username dan password biasa saja, khusus aplikasi ini. Akun Google juga ada sih, tapi biar sederhana. (Catatan desain soal jejak teknis tadi: oke, setuju.)",
+            "skipped": false
+          },
+          "S3.q5": {
+            "q": "Tadi Anda bilang pengennya DP online. Untuk mulai, mau bagaimana mekanismenya — langsung gateway pembayaran otomatis, atau cara lain dulu?",
+            "a": "Transfer manual dulu, admin konfirmasi — nanti kalau ramai baru gateway otomatis. Jadi aplikasinya nggak pegang data kartu sama sekali.",
+            "skipped": false
+          },
+          "S3.q6": {
+            "q": "Selain urusan uang, aplikasi ini akan terhubung ke layanan lain nggak — peta, WhatsApp, pengiriman email, atau layanan AI?",
+            "a": "Kayaknya nggak ada. Oh, kalau email atur-ulang password tadi itu ya layanan pengirim emailnya. Selain itu nggak — WhatsApp tetap di luar aplikasi, seperti sekarang.",
+            "skipped": false
+          },
+          "S3.q7": {
+            "q": "Dari data tadi — nama, nomor HP, jadwal, status DP — adakah yang bakal terasa seperti pengkhianatan kalau dilihat orang asing? Hal kesehatan, uang, anak-anak, nomor identitas?",
+            "a": "Nama dan nomor HP sih biasa. Tapi status DP sama nominal bayarannya urusan uang — kalau bocor atau salah catat, ribut sama pemain. Itu yang paling harus dijaga.",
+            "skipped": false
+          },
+          "S3.q8": {
+            "q": "Kalau internet tiba-tiba mati, apakah aplikasi ini harus tetap bisa dipakai — sama sekali harus, sedikit saja, atau tidak perlu?",
+            "a": "Nggak usah. Kalau internet mati ya pemain memang nggak bisa booking — wajar. Yang penting pas normal jalan terus dan nggak dobol.",
+            "skipped": false
+          },
+          "S3.q9": {
+            "q": "Siapa boleh melihat data siapa — cuma pemiliknya sendiri, sekelompok, atau semua orang?",
+            "a": "Pemain cuma boleh lihat jadwal lapangan dan bookingnya sendiri. Saya sebagai admin lihat semua — ya toh saya pemiliknya.",
+            "skipped": false
+          },
+          "S3.q10": {
+            "q": "Kalau ada orang minta Anda hapus semua data tentang dirinya, apa yang sebaiknya terjadi?",
+            "a": "Ya dihapus saja semuanya — namanya, nomornya, bookingannya. Kan datanya kecil, nggak ada yang perlu disimpan diam-diam.",
+            "skipped": false
+          }
+        },
+        "record": "S3-data.md",
+        "completed_at": "2026-11-07T08:30:31.002Z"
+      },
+      "S4": {
+        "status": "done",
+        "started_at": "2026-11-07T08:30:47.343Z",
+        "answers": {
+          "S4.q1": {
+            "q": "Kalau aplikasi ini cuma bisa melakukan SATU hal di hari pertama, satu hal apa itu?",
+            "a": "Booking jadwal real-time. Pemain buka, lihat slot yang kosong, pilih, booking. Itu intinya — sisanya numpang.",
+            "skipped": false
+          },
+          "S4.q2": {
+            "q": "Bayangkan saya sedang pegang HP itu. Ajak saya jalan satu per satu — saya tap apa duluan? (untuk fitur booking)",
+            "a": "Buka link dari WhatsApp. Muncul pilihan lapangan: Lapangan A, Lapangan B. Pilih satu. Pilih tanggal — misal Sabtu. Terus kelihatan jam-jam: yang masih kosong hijau, yang sudah kebooking abu-abu. Tap slot hijau jam 8 malam. Isi nama dan nomor HP. Klik 'Booking'. Selesai — muncul tulisan booking tercatat, dan slot itu langsung nggak bisa diambil orang lain.",
+            "skipped": false
+          },
+          "S4.q3": {
+            "q": "Setelah itu, hal kedua apa yang paling orang butuhkan?",
+            "a": "Yang kedua jelas DP 30-nya — abis booking, pemain bayar DP, saya konfirmasi. Soalnya tanpa DP itu, pemain mangkal seenaknya.",
+            "skipped": false
+          },
+          "S4.q4": {
+            "q": "Ayo jalan satu per satu untuk urusan DP itu — pemain tap apa, lalu Anda di laptop tap apa?",
+            "a": "Abis booking, di halaman booking pemain kelihatan total sewa sama DP 30%-nya berapa rupiah. Dia transfer ke nomor rekening yang tertera. Di halaman itu ada tombol 'Kirim Bukti Transfer' — dia foto dan kirim. Di laptop saya ada daftar 'Menunggu Konfirmasi'. Saya cek m-banking, duitnya masuk, saya klik 'Konfirmasi'. Di HP pemain statusnya berubah jadi 'DP Diterima'.",
+            "skipped": false
+          },
+          "S4.q5": {
+            "q": "Berikutnya — hal ketiga apa yang orang butuhkan?",
+            "a": "Kelola lapangan dan jadwal. Saya yang atur sendiri: jam buka, harga per jam, dan jam yang ditutup misalnya. Soalnya kalau nggak bisa, tiap mau ganti saya harus telepon Anda.",
+            "skipped": false
+          },
+          "S4.q6": {
+            "q": "Jalan satu per satu untuk kelola lapangan dan jadwal — dari laptop, Anda mulai dari mana?",
+            "a": "Saya login dulu di laptop. Buka menu 'Lapangan'. Pilih Lapangan A: atur jam buka 8 pagi sampai 11 malam, harga per jamnya. Kalau ada jam yang ditutup — misalnya Selasa sore rapihin lampu — saya blokir jam itu. Klik 'Simpan'. Selesai: di HP pemain langsung kebaca, jam itu nggak bisa dipesan.",
+            "skipped": false
+          },
+          "S4.q7": {
+            "q": "Dan hal keempat?",
+            "a": "Laporan harian. Biar saya nggak buka buku lagi tiap malam — sekali lihat, kelar.",
+            "skipped": false
+          },
+          "S4.q8": {
+            "q": "Jalan satu per satu untuk laporan harian.",
+            "a": "Di laptop saya login, buka menu 'Laporan'. Tanggalnya ngisi sendiri hari ini. Kelihatan sekali pandang: ada berapa booking, slot terpakai sama yang kosong, DP sudah masuk total berapa rupiah, dan siapa saja yang belum bayar DP — lengkap sama nomor HP-nya, biar bisa saya kejar. Kalau perlu, bisa dicetak.",
+            "skipped": false
+          },
+          "S4.q9": {
+            "q": "Ada lagi yang ingin ditambahkan, atau cukup sampai di sini untuk bagian fitur?",
+            "a": "Cukup. Empat itu saja dulu.",
+            "skipped": false
+          },
+          "S4.q10": {
+            "q": "Protokol cukup — prioritas F-01 (booking slot real-time): wajib, sebaiknya, atau boleh nanti?",
+            "a": "Wajib lah. Nggak ada booking, nggak ada apa-apa.",
+            "skipped": false
+          },
+          "S4.q11": {
+            "q": "Prioritas F-02 (DP 30% + konfirmasi admin): wajib, sebaiknya, atau boleh nanti?",
+            "a": "Wajib. Itu biar nggak ada no-show — inti dari awal.",
+            "skipped": false
+          },
+          "S4.q12": {
+            "q": "Prioritas F-03 (kelola lapangan & jadwal): wajib, sebaiknya, atau boleh nanti?",
+            "a": "Wajib juga. Kalau saya nggak bisa atur jadwal sendiri, tiap mau blokir jam harus hubungi orang luar.",
+            "skipped": false
+          },
+          "S4.q13": {
+            "q": "Prioritas F-04 (laporan harian): wajib, sebaiknya, atau boleh nanti?",
+            "a": "Kalau yang laporan harian sebaiknya saja dulu. Enak punya, tapi kalau telat sebulan juga masih hidup.",
+            "skipped": false
+          },
+          "S4.q14": {
+            "q": "Loop-back L-01: catatan awal menulis pemain 'bayar DP 30% online' (tugas hari pertama), padahal D-011 memutuskan transfer manual + konfirmasi admin. Untuk versi pertama ini, cara DP yang mana yang benar-benar cukup — apa benar v1 tidak ada pembayaran online sama sekali?",
+            "a": "Oh iya, yang penting DP-nya kecatat dan admin bisa konfirmasi; upload bukti transfer + tombol konfirmasi admin itu cukup. Gateway otomatis taruh nanti deh.",
+            "skipped": false
+          }
+        },
+        "record": "S4-fitur.md",
+        "completed_at": "2026-11-07T08:34:58.936Z"
+      },
+      "S5": {
+        "status": "done",
+        "started_at": "2026-11-07T08:41:19Z",
+        "answers": {
+          "S5.q1": {
+            "q": "Rekomendasi tumpukan: Next.js + Supabase + Vercel, semuanya paket gratis — Rp 0/bulan, tanpa perintah, slot anti-dobol. Pakai rekomendasi ini, atau mau lewati/diskusikan dulu?",
+            "a": "Oke pakai yang gratisan itu dulu. Yang penting nanti saya nggak disuruh ketik perintah dan slot nggak dobol.",
+            "skipped": false
+          }
+        },
+        "record": "S5-research.md",
+        "completed_at": "2026-11-07T08:42:33Z"
+      },
+      "S6": {
+        "status": "done",
+        "started_at": "2026-11-07T08:42:46Z",
+        "answers": {},
+        "record": "S5-research.md",
+        "completed_at": "2026-11-07T08:43:57Z"
+      },
+      "S7": {
+        "status": "done",
+        "started_at": "2026-11-07T08:44:03Z",
+        "answers": {
+          "S7.q1": {
+            "q": "Daftar final versi pertama: F-01, F-02, F-03, F-04 masuk; Parked: gateway pembayaran otomatis (nanti kalau ramai, D-011). Ini dia versi pertamanya? Begitu Anda bilang ya, daftar ini beku.",
+            "a": "Skip dulu deh.",
+            "skipped": true
+          },
+          "S7.q2": {
+            "q": "Skip bukan kunci — saya tanya sekali lagi: apakah F-01, F-02, F-03, F-04 inilah versi pertama, dan sisanya parkir?",
+            "a": "Ya, ini dia versi pertamanya. Kunci.",
+            "skipped": false
+          }
+        },
+        "record": "S7-scope.md",
+        "completed_at": "2026-11-07T08:44:43Z"
+      },
+      "S8": {
+        "status": "done",
+        "started_at": "2026-11-07T08:44:49Z",
+        "answers": {
+          "S8.q1": {
+            "q": "Review rencana bangun: M0 kerangka jalan di alamat asli (booking beneran, slot terkunci), M1 admin atur lapangan & jadwal, M2 alur DP + konfirmasi, M3 laporan harian + cek ulang deploy. Sip, atau ada yang mau diubah?",
+            "a": "Sip, urutannya masuk. M0-nya jangan lupa yang dicheck itu slotnya beneran nggak bisa dobol.",
+            "skipped": false
+          }
+        },
+        "record": "S8-milestones.md",
+        "completed_at": "2026-11-07T08:45:28Z"
+      },
+      "S9": {
+        "status": "done",
+        "record": "Blueprint Bundle (20 files in project root: AGENTS.md, OVERVIEW.md, DECISIONS.md, SPEC/{prd,requirements,data-model,api,architecture}.md, USER_FLOWS.md, CODE_STYLE.md, SECURITY.md, RESEARCH.md, SCOPE.md, MILESTONES.md, VERIFICATION.md, ASSUMPTIONS.md, HANDOVER.md, CAPABILITIES.md, blueprint.json, CLAUDE.md, GEMINI.md)",
+        "started_at": "2026-11-07T08:49:34.912Z",
+        "completed_at": "2026-11-07T09:00:49.590Z"
+      }
+    },
+    "loop_backs": [
+      {
+        "id": "L-01",
+        "from": "S6",
+        "to": "S4",
+        "reason": "Captured DP wording still promises online payment (S1.q9 day-one task 'bayar DP 30% online'; S3.q3 'DP-nya online langsung') while D-011 locked manual transfer + admin confirmation for v1 — a builder would read the records as promising an unbuilt online gateway whose fees the D-005 ceiling excludes; F-02 must be re-anchored aloud",
+        "opened_at": "2026-11-07T08:43:00Z",
+        "resolved_at": "2026-11-07T08:43:38Z"
+      }
+    ],
+    "milestones": [
+      {
+        "id": "M0",
+        "goal": "Walking skeleton: real booking locks a real slot at the real deployed URL (deploy + F-01 end to end)",
+        "features": [
+          "F-01"
+        ]
+      },
+      {
+        "id": "M1",
+        "goal": "Owner logs in and self-manages courts, hours, prices, blocked slots; players see changes immediately",
+        "features": [
+          "F-03"
+        ]
+      },
+      {
+        "id": "M2",
+        "goal": "Manual DP flow: amount shown, proof uploaded, admin confirms/rejects, status flips (D-011/L-01: no online payment in v1)",
+        "features": [
+          "F-02"
+        ]
+      },
+      {
+        "id": "M3",
+        "goal": "Daily report from one truthful source + final re-verification of the M0 deploy",
+        "features": [
+          "F-04"
+        ]
+      }
+    ]
+  },
+  "decisions": [
+    {
+      "id": "D-001",
+      "section": "S1",
+      "summary": "Platform shape: responsive web app — player books on the phone, admin manages on the desktop",
+      "rationale": "User's own choice: players open a link on the phone, admin works on the laptop; no store app",
+      "status": "user_confirmed"
+    },
+    {
+      "id": "D-002",
+      "section": "S1",
+      "summary": "v1 ships as an installable browser app (home-screen icon, no store) instead of a store app",
+      "rationale": "designer_filled: a non-technical user cannot know a website can install like an app; no store account or USD 99/yr fee; shown for correction",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-003",
+      "section": "S1",
+      "summary": "Two role views: player view (mobile) and admin/owner view (desktop) from the same web app",
+      "rationale": "designer_filled: non-technical users do not think in roles; recorded proactively from S1.q4's player-vs-admin answer, shown for correction",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-004",
+      "section": "S1",
+      "summary": "Concurrency: two players grabbing the same slot must not both succeed — the first confirmed booking wins the slot",
+      "rationale": "designer_filled: concurrency is never asked by non-technical users; scale (80-150 players, 20-30 bookings/week, S1.q6) makes it real; recorded proactively, shown for correction",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-005",
+      "section": "S2",
+      "summary": "Budget ceiling: maximum Rp 100.000 per month (~USD 6.5), no existing subscriptions, laptop + Android phone only",
+      "rationale": "User's own ceiling (S2.q3); decides which stack candidates survive S5",
+      "status": "user_confirmed"
+    },
+    {
+      "id": "D-006",
+      "section": "S2",
+      "summary": "Deploy target: managed hosting with automatic updates, zero commands to type",
+      "rationale": "User refuses command-line work (S2.q5); managed/free-tier hosting fits the Rp 100.000 ceiling",
+      "status": "user_confirmed"
+    },
+    {
+      "id": "D-007",
+      "section": "S2",
+      "summary": "Free provider subdomain first (e.g. futsal-court-booking.vercel.app); own .com domain deferred until the business runs",
+      "rationale": "designer_filled per S2 decision surface: user chose free after the trade-off was surfaced (provider name in the address, not portable, .com renews yearly at USD 19.98 verified 2026-11-07 and dies if unpaid); recorded proactively, shown for correction",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-008",
+      "section": "S2",
+      "summary": "Backup duty: backups never happen by accident — the owner (max 1 hr/week) cannot be the backup plan; provider-managed backups plus a simple scheduled export must be part of the stack choice",
+      "rationale": "designer_filled: a non-technical owner cannot know backups are a recurring job; recorded proactively, shown for correction",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-009",
+      "section": "S2",
+      "summary": "Maintenance reality: max ~1 hour/week from the owner; rented hosting goes dark when payment stops — updates must be automatic and the monthly bill tiny and understood",
+      "rationale": "designer_filled: the maintenance/who-updates reality is invisible to non-technical owners; recorded proactively from S2.q8, shown for correction",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-010",
+      "section": "S3",
+      "summary": "Admin-only login (username + password); players book without any account, identified by name + phone number",
+      "rationale": "User's own choice (S3.q1, S3.q4): only the owner logs in; player flow stays accountless for simplicity",
+      "status": "user_confirmed"
+    },
+    {
+      "id": "D-011",
+      "section": "S3",
+      "summary": "v1 payments: manual bank transfer + admin confirmation; automatic payment gateway deferred until volume grows; no card data ever stored",
+      "rationale": "User wants an online DP eventually (S3.q3; S1.q9's day-one task says 'bayar DP 30% online') but chose manual-transfer-first (S3.q5: 'transfer manual dulu, admin konfirmasi — nanti kalau ramai baru gateway otomatis'). FLAG for S5/S6: the v1 method is manual while the recorded day-one expectation says online payment — the feasibility loop must confront this with cost/effort data (gateway fees vs the Rp 100.000 ceiling, and the admin-confirmation workload at 20-30 bookings/week)",
+      "status": "user_confirmed"
+    },
+    {
+      "id": "D-012",
+      "section": "S3",
+      "summary": "Password-reset by email for the admin account — requires an email-sending service",
+      "rationale": "designer_filled: nobody asks what happens after \"forgot password\"; surfaced with the login confirmation, shown for correction, user accepted",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-013",
+      "section": "S3",
+      "summary": "Technical traces (IP addresses, error logs, device signals) count as personal data and join the PII inventory",
+      "rationale": "designer_filled: the user listed human-facing facts only (S3.q2); surfaced proactively, shown for correction, user accepted",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-014",
+      "section": "S3",
+      "summary": "A plain-language privacy policy page exists at launch",
+      "rationale": "designer_filled per the S3 decision surface: any login + any personal data makes it mandatory (store-less web app still needs it for consent screens and player trust); never a question — recorded proactively, shown visibly for correction, user accepted",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-015",
+      "section": "S3",
+      "summary": "A working \"delete my data\" path exists at launch: a player (or the admin) can erase a person — name, phone, bookings — completely",
+      "rationale": "designer_filled: erasure is a duty, not a feature request — surfaced with the S3.q10 answer; the user supplied the behavior (delete everything, nothing retained)",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-016",
+      "section": "S4",
+      "summary": "Priorities confirmed aloud: F-01 booking must, F-02 DP+confirmation must, F-03 court/schedule management must, F-04 daily report should",
+      "rationale": "The priority round never ran before the user fired the 'cukup' control, so the enough-protocol's final batch confirmed all four aloud (S4.q10-q13); none inferred",
+      "status": "user_confirmed"
+    },
+    {
+      "id": "D-017",
+      "section": "S4",
+      "summary": "Empty-state behavior: admin seeds the first courts/hours/prices via F-03 before players use the app; early player sees \"Belum ada jadwal — hubungi admin\"",
+      "rationale": "designer_filled: nobody asks what person #1 sees on an empty screen (bank question 9 cut by \"cukup\"); recorded proactively per principle 12, shown for correction, user accepted",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-018",
+      "section": "S5",
+      "summary": "Paid fallback for the free-tier stack, recorded next to the recommendation: Supabase Pro ~USD 25/month unverified; Vercel Pro USD 20/month (verified S2 row) — both above the D-005 ceiling, so they are revisit-when-revenue triggers, not v1 costs",
+      "rationale": "designer_filled per the S5 decision surface: a non-technical user cannot know free tiers have cliffs (inactivity pause, non-commercial terms, storage caps); recorded proactively, shown for correction",
+      "status": "designer_filled"
+    },
+    {
+      "id": "D-019",
+      "section": "S5",
+      "summary": "Recommended stack accepted: Next.js on Vercel Hobby + Supabase free tier (Postgres + Auth + Storage), total Rp 0/month",
+      "rationale": "User accepted aloud (S5.q1) after the recommendation was tied to the recorded answers (D-005 ceiling, D-006 zero commands, D-004 double-booking impossibility, D-010 admin-only login, D-011 manual transfer v1); no-code alternative rejected on the slot-locking failure",
+      "status": "user_confirmed"
+    },
+    {
+      "id": "D-020",
+      "section": "S7",
+      "summary": "Scope lock: F-01, F-02, F-03, F-04 in-MVP; Parking Lot holds the automatic payment gateway (never an F-NN, parked per D-011 until volume grows); no feature deleted",
+      "rationale": "Explicit confirmation after a skip attempt (a skip is not a lock — re-asked once, S7.q2): 'Ya, ini dia versi pertamanya. Kunci.' F-04 promoted from should to in-MVP aloud by the user, overriding the default parking proposal",
+      "status": "user_confirmed"
+    },
+    {
+      "id": "D-021",
+      "section": "S8",
+      "summary": "Milestone order/grouping: M0 deploy + F-01 walking skeleton, M1 F-03 (admin foundation) before M2 F-02 (DP flow, needs login + prices), M3 F-04 + final deploy re-verification",
+      "rationale": "designer_filled: a non-technical owner cannot sequence builds; the whole plan was shown at the review (S8.q1) and passed without corrections; the user's one emphasis (double-booking check) is M0 criteria 4-5 (D-004), already in place",
+      "status": "designer_filled"
+    }
+  ],
+  "boosters": {
+    "core": [
+      {
+        "name": "pm-skills interview patterns",
+        "repo": "product-on-purpose/pm-skills",
+        "license": "Apache-2.0",
+        "tier": "core",
+        "status": "installed"
+      },
+      {
+        "name": "OpenSpec pattern (structure reference)",
+        "repo": "Fission-AI/OpenSpec",
+        "license": "MIT",
+        "tier": "core",
+        "status": "installed"
+      },
+      {
+        "name": "SimpleEnglish (document-rule subset)",
+        "repo": "AminBlg/SimpleEnglish",
+        "license": "MIT",
+        "tier": "core",
+        "status": "installed"
+      },
+      {
+        "name": "humanizer (de-slop pass)",
+        "repo": "blader/humanizer",
+        "license": "MIT",
+        "tier": "core",
+        "status": "installed"
+      },
+      {
+        "name": "karpathy-guidelines",
+        "repo": "multica-ai/andrej-karpathy-skills",
+        "license": "MIT",
+        "tier": "core",
+        "status": "installed"
+      },
+      {
+        "name": "ponytail",
+        "repo": "DietrichGebert/ponytail",
+        "license": "MIT",
+        "tier": "core",
+        "status": "installed"
+      },
+      {
+        "name": "competitor-analysis / web search",
+        "repo": "browserbase/skills or Firecrawl MCP",
+        "license": "MIT",
+        "tier": "core",
+        "status": "installed"
+      },
+      {
+        "name": "Playwright MCP",
+        "repo": "microsoft/playwright-mcp",
+        "license": "MIT",
+        "tier": "core",
+        "status": "installed"
+      },
+      {
+        "name": "agents.md spec",
+        "repo": "agentsmd/agents.md",
+        "license": "spec text, permissive",
+        "tier": "core",
+        "status": "installed"
+      }
+    ],
+    "enhancer": []
+  },
+  "model_profile": {
+    "tier": "T1",
+    "probe": "skipped",
+    "declared_at": "2026-11-07T08:03:22Z"
+  },
+  "milestones": [
+    {
+      "id": "M0",
+      "goal": "Walking skeleton: real booking locks a real slot at the real deployed URL (deploy + F-01 end to end)",
+      "features": [
+        "F-01"
+      ]
+    },
+    {
+      "id": "M1",
+      "goal": "Owner logs in and self-manages courts, hours, prices, blocked slots; players see changes immediately",
+      "features": [
+        "F-03"
+      ]
+    },
+    {
+      "id": "M2",
+      "goal": "Manual DP flow: amount shown, proof uploaded, admin confirms/rejects, status flips (D-011/L-01: no online payment in v1)",
+      "features": [
+        "F-02"
+      ]
+    },
+    {
+      "id": "M3",
+      "goal": "Daily report from one truthful source + final re-verification of the M0 deploy",
+      "features": [
+        "F-04"
+      ]
+    }
+  ],
+  "handoff": {
+    "status": "done",
+    "completed_at": "2026-11-07T09:06:41.461Z"
+  }
+}

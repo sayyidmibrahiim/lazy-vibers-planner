@@ -97,7 +97,7 @@ This repo also ships the skills behind the next iteration of the product: the LV
 
 ## License & Credits
 
-**License status:** no open-source license has been chosen yet. Until a `LICENSE` file lands, all content in this repo is © reserved — you are welcome to read and learn from it, but reuse needs the owner's permission. The owner is deciding between MIT and Apache-2.0; whichever is chosen will apply to the whole repo from that point on.
+**License:** MIT — see [LICENSE](LICENSE). Free to use, modify, and distribute with attribution. (The owner chose MIT over Apache-2.0 for simplicity; the pipeline's own dependency policy toward NC-licensed boosters is stricter and is documented in [ADR-0001](docs/adr/0001-permissive-first-license-policy.md).)
 
 This pipeline stands on the shoulders of open source — deep thanks to the projects that shaped it, feed it, or were distilled into it (full catalog with verification dates: [docs/research/agent-skill-catalog.md](docs/research/agent-skill-catalog.md)):
 

@@ -84,4 +84,4 @@ For a `npx skills add` install, remove the same folder from the harness director
 
 ## License
 
-LVP skill files in this repo are permissive (permissive-first policy, [ADR-0001](../docs/adr/0001-permissive-first-license-policy.md)): no non-commercial (NC) content is copied or derived into any skill file. NC-licensed Boosters the pipeline depends on are **runtime dependencies**: installed separately at runtime by the skill's booster bootstrap, credited, and never vendored into this repo, the skill folders, or any generated artifact. Add a top-level `LICENSE` file to this repo before public distribution.
+LVP skill files in this repo are permissive (permissive-first policy, [ADR-0001](../docs/adr/0001-permissive-first-license-policy.md)): no non-commercial (NC) content is copied or derived into any skill file. NC-licensed Boosters the pipeline depends on are **runtime dependencies**: installed separately at runtime by the skill's booster bootstrap, credited, and never vendored into this repo, the skill folders, or any generated artifact. This repo is licensed [MIT](../LICENSE) — free to use, modify, and distribute with attribution.

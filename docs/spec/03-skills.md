@@ -75,9 +75,23 @@ Post-lock captures live in `.lvp/docs/sections/S4-additions.md`; done Section Re
 
 **Never**: renumber ids · rewrite history · add bundle files · expand MVP without an explicit answer.
 
+### `/lvp-build` (v1, implemented)
+
+**Precondition**: state readable, scope locked, S8–S9 done, bundle files (`AGENTS.md`, `MILESTONES.md`, `VERIFICATION.md`, `CODE_STYLE.md`, `SECURITY.md`, `DECISIONS.md`, `HANDOVER.md`) present, milestones non-empty. Handoff not done → warn, continue only on explicit answer.
+
+**Flow**:
+1. Preflight (build-loop §1): ids match, every milestone has a verification procedure, no open blocking recheck finding.
+2. Journal `build_started`; load context in `AGENTS.md` order.
+3. Select the first `state.milestones[]` entry not `verified`; never re-run a verified milestone.
+4. Implement deliverables, run the recorded procedure exactly, capture command/exit code/output.
+5. Pass → append to `VERIFICATION.md`, set `verified` + `verified_at`, journal `milestone_verified`. Fail → one fix attempt, then a fresh-assumption check, then `build_blocked`; two failures maximum.
+6. Deployment milestone → live check, then `state.deployment = { status: "live", url, verified_at }`.
+7. All verified → `build_done`; recommend `/lvp-handoff`, then `/lvp-personal-brand`.
+
+`.lvp/` writes are limited to `milestones[].verified`, `verified_at`, `deployment`, and journal appends. Never skip or weaken a verification.
+
 ### v1 stubs (pending implementation)
 
-- **`/lvp-build`** — optional milestone executor: execute M0→Mn, verify each per VERIFICATION.md, stop and report on first unresolvable failure. Never required — any harness can build without it.
 - **`/lvp-personal-brand`** — precondition (machine-checkable): all milestones `verified` + product live/deployed. Separate output; never mixed into the product pipeline.
 
 ## Constitution — `lvp-principles.md`

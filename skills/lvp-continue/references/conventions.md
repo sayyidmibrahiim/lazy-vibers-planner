@@ -59,7 +59,11 @@ One folder = one idea = one product. Never mix two ideas or two products in one 
     "enhancer": []
   },
   "model_profile": { "tier": "T1", "probe": "passed", "declared_at": "..." },
-  "milestones": [],
+  "milestones": [
+    { "id": "M0", "goal": "...", "features": ["F-01"],
+      "verified": false, "verified_at": null }
+  ],
+  "deployment": null,
   "handoff": null
 }
 ```
@@ -73,7 +77,7 @@ Field notes:
 - `decisions[].status`: `user_confirmed | assumed | designer_filled`. `assumed` = asked, user skipped or deferred. `designer_filled` = never surfaced — the user couldn't have known to ask. Both `assumed` and `designer_filled` decisions are also listed in ASSUMPTIONS.md.
 - `boosters`: two arrays, `core` (Booster required for output quality) and `enhancer` (Booster that adds quality). Booster status enum: `installed | missing | failed | degraded`.
 - `model_profile.tier`: `T1 | T2 | T3` — behavior rules in section 7.
-- `milestones`: top-level only — filled at S8, one entry per milestone; never mirrored under `pipeline`. `handoff`: filled by /lvp-handoff.
+- `milestones`: top-level only — filled at S8, one entry per milestone; never mirrored under `pipeline`. `/lvp-build` sets `verified` + `verified_at`. `deployment`: written by `/lvp-build` when the live check passes. `handoff`: filled by /lvp-handoff.
 
 Project status enum: `interview` → `researching` (S5–S6) → `review` (S7–S8) → `bundled` (S9 done) → `building` → `complete`; `error` can occur at any point (recoverable via /lvp-continue, with an `error` event in the Journal).
 
@@ -87,7 +91,7 @@ Append-only; never rewritten. Every state mutation emits at least one event; `an
 {"ts": "2026-11-08T09:00:00Z", "seq": 1, "type": "answer_recorded", "payload": { }}
 ```
 
-Event types: `session_start`, `folder_gate_passed`, `folder_gate_rejected`, `folder_gate_subfolder_created`, `tier_declared`, `capability_probe_passed`, `capability_probe_failed`, `context_guard_triggered`, `truncation_recovered`, `tier_changed`, `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice`, `section_start`, `section_done`, `section_blocked`, `answer_recorded`, `loop_back_opened`, `loop_back_closed`, `scope_locked`, `doc_generated`, `handoff_started`, `gap_found`, `handoff_done`, `recheck_started`, `recheck_finding`, `recheck_research_refresh`, `recheck_fix_applied`, `recheck_done`, `feature_started`, `feature_captured`, `feature_research`, `impact_analysis`, `feature_scope_decision`, `feature_applied`, `feature_done`, `error`, `resume`.
+Event types: `session_start`, `folder_gate_passed`, `folder_gate_rejected`, `folder_gate_subfolder_created`, `tier_declared`, `capability_probe_passed`, `capability_probe_failed`, `context_guard_triggered`, `truncation_recovered`, `tier_changed`, `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice`, `section_start`, `section_done`, `section_blocked`, `answer_recorded`, `loop_back_opened`, `loop_back_closed`, `scope_locked`, `doc_generated`, `handoff_started`, `gap_found`, `handoff_done`, `recheck_started`, `recheck_finding`, `recheck_research_refresh`, `recheck_fix_applied`, `recheck_done`, `feature_started`, `feature_captured`, `feature_research`, `impact_analysis`, `feature_scope_decision`, `feature_applied`, `feature_done`, `build_started`, `milestone_started`, `milestone_verified`, `milestone_failed`, `build_blocked`, `deployment_verified`, `build_done`, `error`, `resume`.
 
 ## 4. Language rules
 

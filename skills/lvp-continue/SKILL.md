@@ -59,6 +59,10 @@ Replay the whole journal in `seq` order onto a fresh state object (shape per con
 | `loop_back_opened` | append the entry to `pipeline.loop_backs` (`resolved_at: null`) |
 | `loop_back_closed` | set `resolved_at` on the matching entry |
 | `scope_locked` | scope-lock evidence (no v1 schema field — see below) |
+| `milestone_verified` | set `milestones[<id>].verified = true` + `verified_at` from the payload |
+| `deployment_verified` | `deployment = { "status": "live", "url", "verified_at" }` from the payload |
+| `build_started`, `milestone_started`, `milestone_failed`, `build_blocked`, `build_done` | informational — verification results are rebuilt from `VERIFICATION.md`, not from these events |
+| `recheck_*`, `feature_*`, `brand_*` | informational — the report and bundle files on disk own the detail |
 | `doc_generated` | bundle-file progress (compare against the conventions §8 list) |
 | `handoff_started`, `gap_found`, `handoff_done` | handoff progress; `handoff_done` fills `handoff` |
 | `error` | `project.status` = "error"; keep the payload for the summary |
@@ -141,7 +145,7 @@ Offer `/lvp-handoff` — its precondition (S1–S8 done + scope locked) is met. 
 
 ### e. Building or complete
 
-Offer the v1 pointers: `/lvp-add-feature` (a new feature through a mini-pipeline) or `/lvp-recheck-plan` (an adversarial audit of decisions + bundle). Both are v1 skills — mention them as pointers only; do not improvise them here.
+Offer the v1 pointers: `/lvp-build` (execute the next unverified milestone), `/lvp-add-feature` (a new feature through a mini-pipeline), or `/lvp-recheck-plan` (an adversarial audit of decisions + bundle). These are v1 skills — mention them as pointers only; do not improvise them here. When every milestone is verified and `state.deployment.status` = "live", also point at `/lvp-personal-brand`.
 
 ## Idempotency
 

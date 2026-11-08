@@ -4,11 +4,11 @@
 
 **Blocked by:** 12
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Machine gate: every milestone verified + live deployment URL checked
-- [ ] Refusal names the exact unmet gate
-- [ ] Positioning and copy derive from product evidence, no invented traction or metrics
-- [ ] Three files generated; each journaled
-- [ ] Brand output stays outside the Blueprint Bundle
-- [ ] No platform posting or account mutation
+- [x] Machine gate: every milestone verified + live deployment URL checked
+- [x] Refusal names the exact unmet gate
+- [x] Positioning and copy derive from product evidence, no invented traction or metrics
+- [x] Three files generated; each journaled
+- [x] Brand output stays outside the Blueprint Bundle
+- [x] No platform posting or account mutation

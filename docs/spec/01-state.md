@@ -12,7 +12,8 @@ All paths are relative to the **project folder** (created by `/lvp-init-new-idea
 │   ├── docs/
 │   │   └── sections/       section records: S0-intake.md, S1-context.md, ...
 │   └── recheck/            recheck reports: RECHECK-<date>.md (audit artifacts)
-└── (after handoff: bundle files + builder code live here)
+├── (after handoff: bundle files + builder code live here)
+└── brand/                  personal-brand kit from /lvp-personal-brand (never part of the bundle)
 ```
 
 `state.json` is the source of truth for "where are we". `journal.ndjson` is the audit trail; if `state.json` is corrupted or missing, it is rebuilt by replaying the journal. Section records are the raw material compiled by S9.

@@ -90,9 +90,21 @@ Post-lock captures live in `.lvp/docs/sections/S4-additions.md`; done Section Re
 
 `.lvp/` writes are limited to `milestones[].verified`, `verified_at`, `deployment`, and journal appends. Never skip or weaken a verification.
 
-### v1 stubs (pending implementation)
+### `/lvp-personal-brand` (v1, implemented)
 
-- **`/lvp-personal-brand`** — precondition (machine-checkable): all milestones `verified` + product live/deployed. Separate output; never mixed into the product pipeline.
+**Precondition (machine-checked, every run)**: state readable; `state.milestones[]` non-empty and every entry `verified: true`; `state.deployment.status` = `"live"` with a URL; that URL fetched now returns 2xx and one expected product fact; `AGENTS.md`, `OVERVIEW.md`, `DECISIONS.md`, `VERIFICATION.md` present. Any failure → refuse naming the exact unmet gate. Handoff is not required.
+
+**Gate rationale**: branding before proof produces fiction, so the gate is evidence, not a checkbox.
+
+**Flow**:
+1. Gate: the five checks above, live URL included; a stored `deployment` field alone is never accepted.
+2. Open: journal `brand_started`; load `OVERVIEW.md` → `DECISIONS.md` → `SCOPE.md` → `VERIFICATION.md` → `RESEARCH.md` → `HANDOVER.md` → `state.json`.
+3. Owner facts: ask only what the bundle cannot answer (display name, role, brand goal, audience priority, tone, links, exclusions). Skipped fact → visible open question, never a guess.
+4. Evidence table: every claim `verified` / owner-approved `(claimed)` / `forbidden`.
+5. Draft one file per turn under `brand/`: `BRAND.md`, `LINKEDIN-PROFILE.md`, `CONTENT-PLAN.md`; journal `brand_file_generated` per file.
+6. Self-check (evidence rule, name consistency, links, nothing posted) then journal `brand_done`.
+
+**Never**: post, schedule, or message on any platform · invent metrics, users, revenue, awards, endorsements · place brand files in the Blueprint Bundle or edit bundle files · replace the English source with a localized variant · run before the gate passes.
 
 ## Constitution — `lvp-principles.md`
 

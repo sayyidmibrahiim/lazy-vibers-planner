@@ -4,13 +4,13 @@
 
 **Blocked by:** 10
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Refuses when no bundle or scope is unlocked
-- [ ] Captures F-NN with English display name, priority, click-by-click script, edge cases
-- [ ] Impact analysis names every affected file and the exact edit per file
-- [ ] Scope decision: current milestone / new milestone / Parking Lot, confirmed aloud
-- [ ] Existing F-NN and milestone ids never renumbered or rewritten
-- [ ] New decision appended with rationale and status
-- [ ] `blueprint.json` regenerated; milestones state updated
-- [ ] Journal events emitted; recommends `/lvp-recheck-plan`
+- [x] Refuses when no bundle or scope is unlocked
+- [x] Captures F-NN with English display name, priority, click-by-click script, edge cases
+- [x] Impact analysis names every affected file and the exact edit per file
+- [x] Scope decision: current milestone / new milestone / Parking Lot, confirmed aloud
+- [x] Existing F-NN and milestone ids never renumbered or rewritten
+- [x] New decision appended with rationale and status
+- [x] `blueprint.json` regenerated; milestones state updated
+- [x] Journal events emitted; recommends `/lvp-recheck-plan`

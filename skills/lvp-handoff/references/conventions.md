@@ -87,7 +87,7 @@ Append-only; never rewritten. Every state mutation emits at least one event; `an
 {"ts": "2026-11-08T09:00:00Z", "seq": 1, "type": "answer_recorded", "payload": { }}
 ```
 
-Event types: `session_start`, `folder_gate_passed`, `folder_gate_rejected`, `folder_gate_subfolder_created`, `tier_declared`, `capability_probe_passed`, `capability_probe_failed`, `context_guard_triggered`, `truncation_recovered`, `tier_changed`, `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice`, `section_start`, `section_done`, `section_blocked`, `answer_recorded`, `loop_back_opened`, `loop_back_closed`, `scope_locked`, `doc_generated`, `handoff_started`, `gap_found`, `handoff_done`, `recheck_started`, `recheck_finding`, `recheck_research_refresh`, `recheck_fix_applied`, `recheck_done`, `error`, `resume`.
+Event types: `session_start`, `folder_gate_passed`, `folder_gate_rejected`, `folder_gate_subfolder_created`, `tier_declared`, `capability_probe_passed`, `capability_probe_failed`, `context_guard_triggered`, `truncation_recovered`, `tier_changed`, `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice`, `section_start`, `section_done`, `section_blocked`, `answer_recorded`, `loop_back_opened`, `loop_back_closed`, `scope_locked`, `doc_generated`, `handoff_started`, `gap_found`, `handoff_done`, `recheck_started`, `recheck_finding`, `recheck_research_refresh`, `recheck_fix_applied`, `recheck_done`, `feature_started`, `feature_captured`, `feature_research`, `impact_analysis`, `feature_scope_decision`, `feature_applied`, `feature_done`, `error`, `resume`.
 
 ## 4. Language rules
 
@@ -117,6 +117,8 @@ Sections run strictly in order, except loop-backs opened by the Feasibility Loop
 | S10 Build | Out of v0 scope; the bundle must be sufficient for any builder | — | — |
 
 Hard rules: if the chosen platform needs a paid account the user lacks, surface it during S2 with the price (do not defer it to research); any blocking risk in S6 makes a loop-back mandatory; scope lock is mandatory before S8; every Acceptance Criterion from S8 must be machine-checkable or scripted (never "looks good").
+
+Post-lock additions: `/lvp-add-feature` records captures in `.lvp/docs/sections/S4-additions.md` (append-only) and edits the bundle directly; done Section Records are never mutated, and S9 does not compile the additions file.
 
 ## 6. Folder Gate
 

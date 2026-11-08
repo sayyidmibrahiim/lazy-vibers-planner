@@ -58,9 +58,25 @@ Skills are plain markdown instruction files (Agent Skills format) living in `ski
 
 **Never**: silent scope change · Parking Lot deletion · milestone verification · fabricated source/date · rewriting journal lines.
 
+### `/lvp-add-feature` (v1, implemented)
+
+**Precondition**: state readable, scope locked, S1–S9 done, bundle present. Request present or asked first.
+
+**Flow**:
+1. Open: journal `feature_started`; derive next `F-NN`, `D-NNN`, `M<n>` from files on disk.
+2. Capture per `references/feature-capture.md`: verbatim request, English name, named user, complete click path, failure cases, priority confirmed aloud.
+3. Targeted research: only new services, data classes, platform facts, legal constraints; source + date or `unverified`.
+4. Impact analysis: every affected bundle file with exact edit; no new bundle files.
+5. Scope decision: extend milestone, append milestone, or Parking Lot; explicit answer recorded as `D-NNN user_confirmed`.
+6. Apply append-only, one file per turn, `feature_applied` per file; state decision + milestone appended; `blueprint.json` regenerated.
+7. Close with `/lvp-recheck-plan` then `/lvp-handoff`.
+
+Post-lock captures live in `.lvp/docs/sections/S4-additions.md`; done Section Records are never mutated.
+
+**Never**: renumber ids · rewrite history · add bundle files · expand MVP without an explicit answer.
+
 ### v1 stubs (pending implementation)
 
-- **`/lvp-add-feature`** — precondition: bundle exists and scope locked. Runs a mini-pipeline (S4-style for the new feature → research → impact analysis over bundle files → sync all affected files → new DECISIONS entry + new milestones appended).
 - **`/lvp-build`** — optional milestone executor: execute M0→Mn, verify each per VERIFICATION.md, stop and report on first unresolvable failure. Never required — any harness can build without it.
 - **`/lvp-personal-brand`** — precondition (machine-checkable): all milestones `verified` + product live/deployed. Separate output; never mixed into the product pipeline.
 

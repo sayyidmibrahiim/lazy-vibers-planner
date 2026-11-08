@@ -33,7 +33,7 @@ Refresh rule: use real web search/fetch when the harness provides it. When it do
 | ID | Check | Default severity | Owner |
 |---|---|---|---|
 | R3.1 | All 20 bundle entries exist and are non-empty (conventions §8). | blocking | S9 |
-| R3.2 | Every `F-NN` has a `SPEC/requirements.md` row, a `USER_FLOWS.md` entry, a `SCOPE.md` row, and exactly one milestone in `MILESTONES.md`. | blocking | S9 |
+| R3.2 | Every in-MVP `F-NN` has a `SPEC/requirements.md` row, a `USER_FLOWS.md` entry, a `SCOPE.md` row, and exactly one milestone in `MILESTONES.md`. Every parked `F-NN` has a requirements row marked parked and a scope row with a reason; no milestone is required. | blocking | S9 |
 | R3.3 | Every milestone acceptance criterion has a matching verification procedure with exact commands and expected outputs. | blocking | S8 |
 | R3.4 | Stack, entity, and feature names are identical across `AGENTS.md`, `DECISIONS.md`, `SPEC/*`, `USER_FLOWS.md`, `SCOPE.md`, `MILESTONES.md`, and `blueprint.json`. | major | S9 |
 | R3.5 | Every bundle file is English GFM, uses ASCII diagrams only, and contains no Mermaid. | minor | S9 |
@@ -54,7 +54,7 @@ Refresh rule: use real web search/fetch when the harness provides it. When it do
 | R4.5 | Every external dependency has a license, an install line, and a fallback when the dependency is unavailable. | major | S9 |
 | R4.6 | `M0` exists and is a walking skeleton (real stack, real data store, one real user task end to end, one scripted check). Every milestone fits one focused builder session. | blocking | S8 |
 | R4.7 | Each failure point named in `SPEC/architecture.md` has a mitigation or a verification step. | major | S9 |
-| R4.8 | No orphan requirement (no flow or milestone) and no orphan milestone (no covered feature). | major | S9 |
+| R4.8 | No orphan in-MVP requirement (no flow or milestone) and no orphan milestone (no covered feature). Parked features are exempt from the milestone rule. | major | S9 |
 
 ## R5 — Bundle self-sufficiency
 

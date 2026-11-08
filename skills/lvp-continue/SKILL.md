@@ -59,6 +59,10 @@ Replay the whole journal in `seq` order onto a fresh state object (shape per con
 | `loop_back_opened` | append the entry to `pipeline.loop_backs` (`resolved_at: null`) |
 | `loop_back_closed` | set `resolved_at` on the matching entry |
 | `scope_locked` | scope-lock evidence (no v1 schema field — see below) |
+| `milestone_verified` | set `milestones[<id>].verified = true` + `verified_at` from the payload |
+| `deployment_verified` | `deployment = { "status": "live", "url", "verified_at" }` from the payload |
+| `build_started`, `milestone_started`, `milestone_failed`, `build_blocked`, `build_done` | informational — verification results are rebuilt from `VERIFICATION.md`, not from these events |
+| `recheck_*`, `feature_*`, `brand_*` | informational — the report and bundle files on disk own the detail |
 | `doc_generated` | bundle-file progress (compare against the conventions §8 list) |
 | `handoff_started`, `gap_found`, `handoff_done` | handoff progress; `handoff_done` fills `handoff` |
 | `error` | `project.status` = "error"; keep the payload for the summary |
@@ -121,7 +125,7 @@ Order of offers:
 
 1. **Open loop-backs exist** → offer to answer them first (the S6 return path): ask the targeted questions in the affected earlier Section (S1–S4), close each entry with `loop_back_closed` + one checkpoint when resolved, then return to S6.
 2. **Otherwise resume the current Section** at the exact micro-batch boundary:
-   - **Load the Section's procedure** per the tier's reload discipline (conventions §7). Find it in this order: (1) the installed `lvp-init-new-idea` skill — check the harness skill list, then known skills directories (`~/.claude/skills/`, `<cwd>/.claude/skills/`, `~/.agents/skills/`), then an `lvp-init-new-idea/` folder beside this skill — and use its `### S<NN>` procedure block plus its `references/sections/` bank files; (2) not found, or the block is still an "appended by a later ticket" placeholder → **degraded fallback, loudly**:
+   - **Load the Section's procedure** per the tier's reload discipline (conventions §7). Find it in this order: (1) the installed `lvp-init-new-idea` skill — check the harness skill list, then known skills directories (`~/.claude/skills/`, `<cwd>/.claude/skills/`, `~/.agents/skills/`), then an `lvp-init-new-idea/` folder beside this skill — and use its `### S<NN>` procedure block plus its `references/sections/` bank files; (2) not found, or the procedure block is missing → **degraded fallback, loudly**:
      - Reload `state.json` + the current Section Record.
      - Re-derive the next micro-batch from the Section's **exit criteria** (conventions §5): every not-yet-satisfied criterion becomes one targeted question, composed from the recorded answers, phrased in User Language with a one-line reason it matters. Use bank files if present; otherwise the model's own interview judgment.
      - Say plainly (English source): "The lvp-init-new-idea skill is not installed here, so my questions for this part come from a simpler fallback. Install it for full interview support." Write `Booster: init skill procedures (degraded — fallback questions used)` into the Section Record so S9 surfaces it in OVERVIEW.md.
@@ -141,7 +145,7 @@ Offer `/lvp-handoff` — its precondition (S1–S8 done + scope locked) is met. 
 
 ### e. Building or complete
 
-Offer the v1 pointers: `/lvp-add-feature` (a new feature through a mini-pipeline) or `/lvp-recheck-plan` (an adversarial audit of decisions + bundle). Both are v1 skills — mention them as pointers only; do not improvise them here.
+Offer the v1 pointers: `/lvp-build` (execute the next unverified milestone), `/lvp-add-feature` (a new feature through a mini-pipeline), or `/lvp-recheck-plan` (an adversarial audit of decisions + bundle). These are v1 skills — mention them as pointers only; do not improvise them here. When every milestone is verified and `state.deployment.status` = "live", also point at `/lvp-personal-brand`.
 
 ## Idempotency
 

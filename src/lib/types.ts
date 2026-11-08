@@ -7,6 +7,7 @@ export interface Project {
   status: ProjectStatus;
   createdAt: number;
   updatedAt: number;
+  folderPath?: string | null;
 }
 
 export interface Question {

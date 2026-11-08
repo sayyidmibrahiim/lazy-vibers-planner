@@ -64,6 +64,22 @@ _Avoid_: rules, policy, system prompt
 Katalog skill/plugin/MCP eksternal yang sudah diverifikasi (kualitas, lisensi, aktivitas), sumber rekomendasi per-stack dan per-Section. Contoh isi: docs/research/agent-skill-catalog.md.
 _Avoid_: skill list, marketplace
 
+**Recheck**:
+Audit adversarial (`/lvp-recheck-plan`) atas Blueprint Bundle yang sudah jadi: setiap keputusan, harga, milestone, dan tautan antar-file diperiksa ulang, bukti basi di-refresh dengan sumber terbaru, temuan dicatat sebagai `RC-NN` dengan severity, lalu perbaikan yang dikonfirmasi diterapkan di tempat. Bukan lint yang memuji.
+_Avoid_: review (sendirian), QA pass, sanity check
+
+**Impact Analysis**:
+Peta dampak `/lvp-add-feature`: setiap baris matriks menyebut file bundle yang berubah, aksi (`edit`/`append`/`none`), dan bagian atau baris persisnya. Fitur tanpa impact analysis tidak boleh masuk bundle.
+_Avoid_: diff, changelist
+
+**Build Loop**:
+Siklus `/lvp-build` per milestone: pilih milestone pertama yang belum `verified`, implementasi, jalankan prosedur verifikasi yang tercatat apa adanya, tangkap output nyata, catat ke `VERIFICATION.md`, set state, lanjut. Dua kegagalan maksimum, lalu berhenti dengan laporan.
+_Avoid_: run, execution, CI (bukan istilah untuk siklus ini)
+
+**Brand Kit**:
+Output terpisah `/lvp-personal-brand` di folder `brand/`: `BRAND.md`, `LINKEDIN-PROFILE.md`, `CONTENT-PLAN.md`. Hanya jalan setelah semua milestone `verified` dan deployment live. Setiap klaim berasal dari bukti bundle atau halaman live; tidak pernah posting ke platform.
+_Avoid_: marketing kit, personal branding files (sebagai bagian bundle)
+
 **Booster**:
 Skill eksternal terverifikasi yang menjadi dependensi LVP, dua tier: **core** (wajib — menjamin kualitas output) dan **enhancer** (menambah kualitas). Di-install otomatis di awal sesi bila belum ada; kalau terhalang (harness melarang install, offline, API key tidak ada), pipeline menawarkan pilihan ke user: dibantu install penuh, lanjut dengan output ditandai terbatas, atau berhenti. Konten skill berlisensi NC dipakai sebagai dependensi runtime, tidak pernah di-vendor ke repo LVP.
 _Avoid_: plugin, add-on, optional skill

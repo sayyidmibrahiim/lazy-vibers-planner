@@ -93,7 +93,17 @@ Generate bersifat idempoten per dokumen: dokumen yang sudah ada dilewati, jadi p
 
 ## LVP Pipeline Skills
 
-This repo also ships the skills behind the next iteration of the product: the LVP (Lazy Vibe Planner) pipeline, a model-agnostic interview flow that turns a raw idea from a non-technical owner into a verified Blueprint Bundle. Each skill lives in its own folder under `skills/` (`skills/<name>/SKILL.md` plus self-contained `references/`), runs anywhere a harness can read the Agent Skills format, and works on a one-folder-one-product model: every project gets its own folder with disk-based state under `.lvp/`. Install with `npx skills add <owner>/lazy-vibers-planner` (or follow the per-harness manual-copy paths), and uninstall by deleting the skill folder — full instructions, including the file list that a correct install must produce and the license note (NC boosters stay runtime dependencies, never vendored), are in [skills/README.md](skills/README.md).
+This repo also ships the seven skills behind the LVP (Lazy Vibe Planner) pipeline, a model-agnostic flow that turns a raw idea from a non-technical owner into a verified Blueprint Bundle and working product:
+
+- `/lvp-init-new-idea` — intake (S0), interview (S1–S8), and 20-file bundle compiler (S9).
+- `/lvp-continue` — resume interrupted/parked pipelines, rebuild damaged state from journal.
+- `/lvp-handoff` — 20-file gap lint, emit `blueprint.json`, generate builder harness stubs.
+- `/lvp-recheck-plan` — R1–R6 adversarial audit, live research refresh, fix plan applied in place.
+- `/lvp-add-feature` — additive mini-pipeline for post-lock features with cross-bundle impact analysis.
+- `/lvp-build` — sequential milestone executor with verbatim verification capture.
+- `/lvp-personal-brand` — post-build brand kit (`brand/`); machine-gated by verified milestones + live check.
+
+Each skill lives in its own folder under `skills/` (`skills/<name>/SKILL.md` plus self-contained `references/`), runs anywhere a harness can read the Agent Skills format, and works on a one-folder-one-product model: every project gets its own folder with disk-based state under `.lvp/`. Install with `npx skills add <owner>/lazy-vibers-planner` (or follow the per-harness manual-copy paths), and uninstall by deleting the skill folders — full instructions, including directory structures and license details (NC boosters stay runtime dependencies, never vendored), are in [skills/README.md](skills/README.md).
 
 ## License & Credits
 

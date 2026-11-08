@@ -44,6 +44,7 @@ Each Section has: **purpose**, **question strategy**, **booster routing**, **out
 - Booster: Mom Test + user-story/Gherkin patterns (pm-skills). Fallback: internal bank.
 - Mechanics: per feature — name, who uses it, step-by-step happy path (the "klik tombol ini → selesai" script), edge cases the user cares about. Features get IDs `F-01…`.
 - Output: `S4-fitur.md`; feeds `SPEC/requirements.md` + `USER_FLOWS.md`.
+- Post-lock additions: recorded by `/lvp-add-feature` in `S4-additions.md` (append-only); S4 itself is never re-run.
 - Exit: user explicitly says enough; feature list has no "and whatever else" placeholders.
 
 ## S5 — Deep research

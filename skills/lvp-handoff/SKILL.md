@@ -79,7 +79,7 @@ Only when the lint is clean. These are the only bundle writes this skill ever ma
    - open questions go to the journal (`.lvp/journal.ndjson`), never guessed, never silently resolved;
    - follow `CODE_STYLE.md` for every line written;
    - if the plan has a gap, show it immediately with a concrete fix option attached — never smooth it over (anti-yes-man, principle 2);
-   - `.lvp/` is read-only planning state — the builder must not modify it, except appending open questions to `.lvp/journal.ndjson`.
+   - `.lvp/` is read-only planning state — the builder must not modify it, except appending open questions to `.lvp/journal.ndjson`; the optional `/lvp-build` skill may also set milestone verification and deployment fields.
 2. **Close** — print, in the user's language: the recommended install lines from `CAPABILITIES.md` (every row's install command with name and license; NC items marked runtime-dependency-only), then the kickoff command for the current harness with the entry prompt as the first input. Kickoff forms: Claude Code `claude "$(cat HANDOFF-PROMPT.md)"` · Gemini CLI `gemini -p "$(cat HANDOFF-PROMPT.md)"` · Codex `codex "$(cat HANDOFF-PROMPT.md)"` · ZCode `zcode "$(cat HANDOFF-PROMPT.md)"` · harness unknown → "open a fresh session in this folder and paste the contents of `HANDOFF-PROMPT.md`".
 3. **Done** — journal `handoff_done` (payload: gaps found, self-fixes applied, entry prompt path) and fill `state.handoff` = `{ "status": "done", "completed_at": <now> }` — one checkpoint. This is the only state-field change the skill ever makes.
 

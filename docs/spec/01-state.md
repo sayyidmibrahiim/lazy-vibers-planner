@@ -9,9 +9,11 @@ All paths are relative to the **project folder** (created by `/lvp-init-new-idea
 ├── .lvp/
 │   ├── state.json          authoritative snapshot (rewritable)
 │   ├── journal.ndjson      append-only event log (never rewritten)
-│   └── docs/
-│       └── sections/       section records: S0-intake.md, S1-context.md, ...
-└── (after handoff: bundle files + builder code live here)
+│   ├── docs/
+│   │   └── sections/       section records: S0-intake.md, S1-context.md, ...
+│   └── recheck/            recheck reports: RECHECK-<date>.md (audit artifacts)
+├── (after handoff: bundle files + builder code live here)
+└── brand/                  personal-brand kit from /lvp-personal-brand (never part of the bundle)
 ```
 
 `state.json` is the source of truth for "where are we". `journal.ndjson` is the audit trail; if `state.json` is corrupted or missing, it is rebuilt by replaying the journal. Section records are the raw material compiled by S9.
@@ -61,7 +63,11 @@ All paths are relative to the **project folder** (created by `/lvp-init-new-idea
   "model_profile": { "tier": "T1", "probe": "skipped", "declared_at": "..." },
   // tier: T1 | T2 | T3 — rules in docs/spec/06-model-tiers.md
   // probe: "passed" | "skipped" (T1 skips the probe) | "failed"
-  "milestones": [],                        // filled at S8
+  "milestones": [                          // filled at S8
+    { "id": "M0", "goal": "...", "features": ["F-01"],
+      "verified": false, "verified_at": null }   // verified by /lvp-build
+  ],
+  "deployment": null,                      // { status: "live|pending", url, verified_at }
   "handoff": null                          // filled at /lvp-handoff
 }
 ```
@@ -78,7 +84,7 @@ Questions `S<NN>.q<NN>` · Decisions `D-001…` · Milestones `M0, M1, …` · L
 
 Each line: `{"ts": "...", "seq": 1, "type": "...", "payload": { ... }}`
 
-`session_start` · `folder_gate_passed|folder_gate_rejected|folder_gate_subfolder_created` · `tier_declared` · `capability_probe_passed|failed` · `context_guard_triggered` · `truncation_recovered` · `tier_changed` · `booster_check` · `booster_install_ok|failed` · `booster_choice` (user decision on failure) · `section_start|section_done` · `answer_recorded` · `loop_back_opened|closed` · `scope_locked` · `doc_generated` · `handoff_started|gap_found|handoff_done` · `error` · `resume`
+`session_start` · `folder_gate_passed|folder_gate_rejected|folder_gate_subfolder_created` · `tier_declared` · `capability_probe_passed|failed` · `context_guard_triggered` · `truncation_recovered` · `tier_changed` · `booster_check` · `booster_install_ok|failed` · `booster_choice` (user decision on failure) · `section_start|section_done` · `answer_recorded` · `loop_back_opened|closed` · `scope_locked` · `doc_generated` · `handoff_started|gap_found|handoff_done` · `recheck_started|recheck_finding|recheck_research_refresh|recheck_fix_applied|recheck_done` · `feature_started|feature_captured|feature_research|impact_analysis|feature_scope_decision|feature_applied|feature_done` · `build_started|milestone_started|milestone_verified|milestone_failed|build_blocked|deployment_verified|build_done` · `error` · `resume`
 
 Rules: append-only; never rewrite; every state mutation emits at least one event; `answer_recorded` fires **per answer** (checkpoint granularity).
 

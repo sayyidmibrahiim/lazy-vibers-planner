@@ -20,7 +20,8 @@ function openDb(): DatabaseSync {
       idea TEXT NOT NULL,
       status TEXT NOT NULL DEFAULT 'interview',
       created_at INTEGER NOT NULL,
-      updated_at INTEGER NOT NULL
+      updated_at INTEGER NOT NULL,
+      folder_path TEXT
     );
 
     CREATE TABLE IF NOT EXISTS questions (
@@ -47,6 +48,12 @@ function openDb(): DatabaseSync {
     CREATE INDEX IF NOT EXISTS idx_docs_project ON docs(project_id, position);
   `);
 
+  try {
+    db.exec("ALTER TABLE projects ADD COLUMN folder_path TEXT;");
+  } catch {
+    // Column already exists
+  }
+
   return db;
 }
 
@@ -62,6 +69,7 @@ type ProjectRow = {
   status: ProjectStatus;
   created_at: number;
   updated_at: number;
+  folder_path?: string | null;
 };
 
 type QuestionRow = {
@@ -91,6 +99,7 @@ function toProject(row: ProjectRow): Project {
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    folderPath: row.folder_path ?? null,
   };
 }
 
@@ -123,6 +132,32 @@ export function createProject(name: string, idea: string): string {
   getDb()
     .prepare("INSERT INTO projects (id, name, idea, status, created_at, updated_at) VALUES (?, ?, ?, 'interview', ?, ?)")
     .run(id, name, idea, now, now);
+  return id;
+}
+
+export function registerLvpProject(
+  folderPath: string,
+  name: string,
+  idea: string,
+  status: ProjectStatus = "ready",
+): string {
+  const db = getDb();
+  const existing = db
+    .prepare("SELECT id FROM projects WHERE folder_path = ?")
+    .get(folderPath) as { id: string } | undefined;
+  const now = Date.now();
+
+  if (existing) {
+    db.prepare(
+      "UPDATE projects SET name = ?, idea = ?, status = ?, updated_at = ? WHERE id = ?",
+    ).run(name, idea, status, now, existing.id);
+    return existing.id;
+  }
+
+  const id = randomUUID();
+  db.prepare(
+    "INSERT INTO projects (id, name, idea, status, created_at, updated_at, folder_path) VALUES (?, ?, ?, ?, ?, ?, ?)",
+  ).run(id, name, idea, status, now, now, folderPath);
   return id;
 }
 

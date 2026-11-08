@@ -42,12 +42,69 @@ Skills are plain markdown instruction files (Agent Skills format) living in `ski
 5. Compose the **entry prompt** (English): read AGENTS.md first · execute milestones in order · verify each milestone before claiming done · record results in VERIFICATION.md · consult DECISIONS.md before asking · open questions go to journal, never silently guessed · follow CODE_STYLE.md.
 6. Print the recommended install lines for `CAPABILITIES.md` boosters and the builder kickoff commands for the harness the user is currently in. Journal: `handoff_done`.
 
-## v1 stubs (contracts only, not built in v0)
+## v1 skills
 
-- **`/lvp-recheck-plan`** — adversarial audit of all decisions + bundle; refreshes research with current data; produces a gap report, a fix plan, and loops fixes back into affected bundle files. Skeptical POV is mandatory, not stylistic.
-- **`/lvp-add-feature`** — precondition: bundle exists and scope locked. Runs a mini-pipeline (S4-style for the new feature → research → impact analysis over bundle files → sync all affected files → new DECISIONS entry + new milestones appended).
-- **`/lvp-build`** — optional milestone executor: execute M0→Mn, verify each per VERIFICATION.md, stop and report on first unresolvable failure. Never required — any harness can build without it.
-- **`/lvp-personal-brand`** — precondition (machine-checkable): all milestones `verified` + product live/deployed. Separate output; never mixed into the product pipeline.
+### `/lvp-recheck-plan` (v1, implemented)
+
+**Precondition**: `.lvp/state.json` readable, scope locked (`scope_locked` journal event or S7 done), S1–S9 done, bundle present. Otherwise refuse with guidance to `/lvp-continue`.
+
+**Flow**:
+1. Open: journal `recheck_started`; inventory state, journal, Section Records, all 20 bundle files.
+2. Audit: run `references/audit-checklist.md` groups R1–R6 literally — decision integrity, evidence freshness, cross-file coherence, feasibility/risk, bundle self-sufficiency, state/artifact consistency. Every failure is a finding `RC-NN` with severity, evidence, owner, fix; journal `recheck_finding`.
+3. Refresh: re-verify stale (price/cost > 90 days, legal/ToS/API > 90 days, competitor claims > 180 days) or unsourced claims live; update every file repeating the claim; journal `recheck_research_refresh`. No web access → claim stays `unverified`, stated loudly.
+4. Report: write `.lvp/recheck/RECHECK-<date>.md` (never overwrite a prior report); split fixes into mechanical and user-decision.
+5. Apply: mechanical one file per turn (`recheck_fix_applied`); user-decision fixes only after an explicit answer, recorded as `D-NNN`; `blueprint.json` regenerated from state + bundle when stale.
+6. Re-audit R3, R6, and every touched group; append results; journal `recheck_done`.
+
+**Never**: silent scope change · Parking Lot deletion · milestone verification · fabricated source/date · rewriting journal lines.
+
+### `/lvp-add-feature` (v1, implemented)
+
+**Precondition**: state readable, scope locked, S1–S9 done, bundle present. Request present or asked first.
+
+**Flow**:
+1. Open: journal `feature_started`; derive next `F-NN`, `D-NNN`, `M<n>` from files on disk.
+2. Capture per `references/feature-capture.md`: verbatim request, English name, named user, complete click path, failure cases, priority confirmed aloud.
+3. Targeted research: only new services, data classes, platform facts, legal constraints; source + date or `unverified`.
+4. Impact analysis: every affected bundle file with exact edit; no new bundle files.
+5. Scope decision: extend milestone, append milestone, or Parking Lot; explicit answer recorded as `D-NNN user_confirmed`.
+6. Apply append-only, one file per turn, `feature_applied` per file; state decision + milestone appended; `blueprint.json` regenerated.
+7. Close with `/lvp-recheck-plan` then `/lvp-handoff`.
+
+Post-lock captures live in `.lvp/docs/sections/S4-additions.md`; done Section Records are never mutated.
+
+**Never**: renumber ids · rewrite history · add bundle files · expand MVP without an explicit answer.
+
+### `/lvp-build` (v1, implemented)
+
+**Precondition**: state readable, scope locked, S8–S9 done, bundle files (`AGENTS.md`, `MILESTONES.md`, `VERIFICATION.md`, `CODE_STYLE.md`, `SECURITY.md`, `DECISIONS.md`, `HANDOVER.md`) present, milestones non-empty. Handoff not done → warn, continue only on explicit answer.
+
+**Flow**:
+1. Preflight (build-loop §1): ids match, every milestone has a verification procedure, no open blocking recheck finding.
+2. Journal `build_started`; load context in `AGENTS.md` order.
+3. Select the first `state.milestones[]` entry not `verified`; never re-run a verified milestone.
+4. Implement deliverables, run the recorded procedure exactly, capture command/exit code/output.
+5. Pass → append to `VERIFICATION.md`, set `verified` + `verified_at`, journal `milestone_verified`. Fail → one fix attempt, then a fresh-assumption check, then `build_blocked`; two failures maximum.
+6. Deployment milestone → live check, then `state.deployment = { status: "live", url, verified_at }`.
+7. All verified → `build_done`; recommend `/lvp-handoff`, then `/lvp-personal-brand`.
+
+`.lvp/` writes are limited to `milestones[].verified`, `verified_at`, `deployment`, and journal appends. Never skip or weaken a verification.
+
+### `/lvp-personal-brand` (v1, implemented)
+
+**Precondition (machine-checked, every run)**: state readable; `state.milestones[]` non-empty and every entry `verified: true`; `state.deployment.status` = `"live"` with a URL; that URL fetched now returns 2xx and one expected product fact; `AGENTS.md`, `OVERVIEW.md`, `DECISIONS.md`, `VERIFICATION.md` present. Any failure → refuse naming the exact unmet gate. Handoff is not required.
+
+**Gate rationale**: branding before proof produces fiction, so the gate is evidence, not a checkbox.
+
+**Flow**:
+1. Gate: the five checks above, live URL included; a stored `deployment` field alone is never accepted.
+2. Open: journal `brand_started`; load `OVERVIEW.md` → `DECISIONS.md` → `SCOPE.md` → `VERIFICATION.md` → `RESEARCH.md` → `HANDOVER.md` → `state.json`.
+3. Owner facts: ask only what the bundle cannot answer (display name, role, brand goal, audience priority, tone, links, exclusions). Skipped fact → visible open question, never a guess.
+4. Evidence table: every claim `verified` / owner-approved `(claimed)` / `forbidden`.
+5. Draft one file per turn under `brand/`: `BRAND.md`, `LINKEDIN-PROFILE.md`, `CONTENT-PLAN.md`; journal `brand_file_generated` per file.
+6. Self-check (evidence rule, name consistency, links, nothing posted) then journal `brand_done`.
+
+**Never**: post, schedule, or message on any platform · invent metrics, users, revenue, awards, endorsements · place brand files in the Blueprint Bundle or edit bundle files · replace the English source with a localized variant · run before the gate passes.
 
 ## Constitution — `lvp-principles.md`
 

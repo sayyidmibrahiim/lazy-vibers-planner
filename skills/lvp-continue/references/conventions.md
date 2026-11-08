@@ -15,9 +15,11 @@ One folder = one idea = one product. Never mix two ideas or two products in one 
 ├── .lvp/
 │   ├── state.json        State: authoritative snapshot (rewritable)
 │   ├── journal.ndjson    Journal: append-only event log (never rewritten)
-│   └── docs/
-│       └── sections/     Section Records: S0-intake.md, S1-context.md, ...
-└── (after Handoff: Blueprint Bundle files + builder code live here)
+│   ├── docs/
+│   │   └── sections/     Section Records: S0-intake.md, S1-context.md, ...
+│   └── recheck/          Recheck reports: RECHECK-<date>.md (audit artifacts)
+├── (after Handoff: Blueprint Bundle files + builder code live here)
+└── brand/                Personal-brand kit from /lvp-personal-brand (never part of the bundle)
 ```
 
 `state.json` is the single source of truth for "where are we". `journal.ndjson` is the audit trail: if the State is corrupted or missing, rebuild it by journal replay. Section Records are the raw material S9 compiles.
@@ -58,7 +60,11 @@ One folder = one idea = one product. Never mix two ideas or two products in one 
     "enhancer": []
   },
   "model_profile": { "tier": "T1", "probe": "passed", "declared_at": "..." },
-  "milestones": [],
+  "milestones": [
+    { "id": "M0", "goal": "...", "features": ["F-01"],
+      "verified": false, "verified_at": null }
+  ],
+  "deployment": null,
   "handoff": null
 }
 ```
@@ -72,7 +78,7 @@ Field notes:
 - `decisions[].status`: `user_confirmed | assumed | designer_filled`. `assumed` = asked, user skipped or deferred. `designer_filled` = never surfaced — the user couldn't have known to ask. Both `assumed` and `designer_filled` decisions are also listed in ASSUMPTIONS.md.
 - `boosters`: two arrays, `core` (Booster required for output quality) and `enhancer` (Booster that adds quality). Booster status enum: `installed | missing | failed | degraded`.
 - `model_profile.tier`: `T1 | T2 | T3` — behavior rules in section 7.
-- `milestones`: top-level only — filled at S8, one entry per milestone; never mirrored under `pipeline`. `handoff`: filled by /lvp-handoff.
+- `milestones`: top-level only — filled at S8, one entry per milestone; never mirrored under `pipeline`. `/lvp-build` sets `verified` + `verified_at`. `deployment`: written by `/lvp-build` when the live check passes. `handoff`: filled by /lvp-handoff.
 
 Project status enum: `interview` → `researching` (S5–S6) → `review` (S7–S8) → `bundled` (S9 done) → `building` → `complete`; `error` can occur at any point (recoverable via /lvp-continue, with an `error` event in the Journal).
 
@@ -86,7 +92,7 @@ Append-only; never rewritten. Every state mutation emits at least one event; `an
 {"ts": "2026-11-08T09:00:00Z", "seq": 1, "type": "answer_recorded", "payload": { }}
 ```
 
-Event types: `session_start`, `folder_gate_passed`, `folder_gate_rejected`, `folder_gate_subfolder_created`, `tier_declared`, `capability_probe_passed`, `capability_probe_failed`, `context_guard_triggered`, `truncation_recovered`, `tier_changed`, `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice`, `section_start`, `section_done`, `section_blocked`, `answer_recorded`, `loop_back_opened`, `loop_back_closed`, `scope_locked`, `doc_generated`, `handoff_started`, `gap_found`, `handoff_done`, `error`, `resume`.
+Event types: `session_start`, `folder_gate_passed`, `folder_gate_rejected`, `folder_gate_subfolder_created`, `tier_declared`, `capability_probe_passed`, `capability_probe_failed`, `context_guard_triggered`, `truncation_recovered`, `tier_changed`, `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice`, `section_start`, `section_done`, `section_blocked`, `answer_recorded`, `loop_back_opened`, `loop_back_closed`, `scope_locked`, `doc_generated`, `handoff_started`, `gap_found`, `handoff_done`, `recheck_started`, `recheck_finding`, `recheck_research_refresh`, `recheck_fix_applied`, `recheck_done`, `feature_started`, `feature_captured`, `feature_research`, `impact_analysis`, `feature_scope_decision`, `feature_applied`, `feature_done`, `build_started`, `milestone_started`, `milestone_verified`, `milestone_failed`, `build_blocked`, `deployment_verified`, `build_done`, `brand_started`, `brand_file_generated`, `brand_done`, `error`, `resume`.
 
 ## 4. Language rules
 
@@ -116,6 +122,8 @@ Sections run strictly in order, except loop-backs opened by the Feasibility Loop
 | S10 Build | Out of v0 scope; the bundle must be sufficient for any builder | — | — |
 
 Hard rules: if the chosen platform needs a paid account the user lacks, surface it during S2 with the price (do not defer it to research); any blocking risk in S6 makes a loop-back mandatory; scope lock is mandatory before S8; every Acceptance Criterion from S8 must be machine-checkable or scripted (never "looks good").
+
+Post-lock additions: `/lvp-add-feature` records captures in `.lvp/docs/sections/S4-additions.md` (append-only) and edits the bundle directly; done Section Records are never mutated, and S9 does not compile the additions file.
 
 ## 6. Folder Gate
 

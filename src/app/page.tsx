@@ -2,6 +2,7 @@ import Link from "next/link";
 import { listProjects } from "@/lib/db";
 import type { ProjectStatus } from "@/lib/types";
 import { NewProjectForm } from "./new-project-form";
+import { OpenFolderForm } from "./open-folder-form";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -78,6 +79,7 @@ export default function Home() {
 
           <div className="lg:pt-10">
             <NewProjectForm />
+            <OpenFolderForm />
           </div>
         </section>
 
@@ -110,11 +112,18 @@ export default function Home() {
                     {(index + 1).toString().padStart(2, "0")}
                   </span>
                   <span className="min-w-0">
-                    <span className="block truncate text-[15px] font-medium tracking-[-0.01em]">
-                      {project.name}
+                    <span className="flex items-center gap-2">
+                      <span className="truncate text-[15px] font-medium tracking-[-0.01em]">
+                        {project.name}
+                      </span>
+                      {project.folderPath ? (
+                        <span className="label rounded border border-blueprint/30 bg-blueprint/5 px-1.5 py-0.2 text-[9px] text-blueprint">
+                          LVP
+                        </span>
+                      ) : null}
                     </span>
                     <span className="mt-1 block truncate text-xs text-ink/65">
-                      {project.idea}
+                      {project.folderPath ? project.folderPath : project.idea}
                     </span>
                   </span>
                   <span className="hidden sm:block">

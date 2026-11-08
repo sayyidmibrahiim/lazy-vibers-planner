@@ -40,4 +40,5 @@ Not in v0 (stub contracts only): `/lvp-recheck-plan`, `/lvp-add-feature`, option
 
 - Two-way web UI, multi-user, auth.
 - Version history of documents (state journal is audit log, not doc versioning).
-- Executing the build (S10) — the bundle must be sufficient for any builder without LVP skills.
+- Executing the build without LVP skills — the bundle must stay sufficient for any builder on its own; `/lvp-build` is an optional convenience, not a requirement.
+- Posting to any platform — `/lvp-personal-brand` produces files only.

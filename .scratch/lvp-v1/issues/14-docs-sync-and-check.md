@@ -4,10 +4,10 @@
 
 **Blocked by:** 10–13
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `docs/spec/03-skills.md` holds real v1 contracts, no stubs
-- [ ] State fields and new journal events documented in spec 01 + conventions
-- [ ] GLOSSARY gains Recheck, Impact Analysis, Build Loop, Brand Kit terms
-- [ ] README + skills/README list all seven skills and install instructions
-- [ ] Structural check passes: frontmatter, references exist, snapshots byte-identical, no placeholders
+- [x] `docs/spec/03-skills.md` holds real v1 contracts, no stubs
+- [x] State fields and new journal events documented in spec 01 + conventions
+- [x] GLOSSARY gains Recheck, Impact Analysis, Build Loop, Brand Kit terms
+- [x] README + skills/README list all seven skills and install instructions
+- [x] Structural check passes: frontmatter, references exist, snapshots byte-identical, no placeholders

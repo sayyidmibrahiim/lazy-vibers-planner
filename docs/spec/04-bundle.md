@@ -38,8 +38,21 @@ Format rules (all files): GitHub-flavored Markdown · English source · no Merma
 5. Emit `blueprint.json` + harness adapters.
 6. Journal `doc_generated` per file (checkpoint granularity).
 
-## `blueprint.json` schema (v1, stable — consumers: web UI, external harnesses)
+## Maintenance after S9 (v1 skills)
 
+The 20-file list above is fixed. The v1 skills change the bundle by editing those files, never by adding a 21st:
+
+| Skill | Bundle effect | Side artifacts (never in the bundle) |
+|---|---|---|
+| `/lvp-handoff` | regenerates `blueprint.json`, refreshes the entry prompt | `HANDOFF-PROMPT.md` |
+| `/lvp-recheck-plan` | fixes confirmed findings in place; regenerates `blueprint.json` when stale | `.lvp/recheck/RECHECK-<date>.md` |
+| `/lvp-add-feature` | appends the requirement, flow, scope, milestone, verification, decision, assumption, research, and cost rows | `.lvp/docs/sections/S4-additions.md` |
+| `/lvp-build` | appends the build log to `VERIFICATION.md`; never edits a requirement or an acceptance criterion | `brand/` (next row), `state.milestones[].verified` |
+| `/lvp-personal-brand` | none — the bundle is read-only here | `brand/BRAND.md`, `brand/LINKEDIN-PROFILE.md`, `brand/CONTENT-PLAN.md` |
+
+Rules: existing ids are never renumbered; earlier `VERIFICATION.md` entries and `DECISIONS.md` rows are never rewritten; `blueprint.json` stays derived; parked features keep a requirements row and a scope row, and require no milestone.
+
+## `blueprint.json` schema (v1, stable — consumers: web UI, external harnesses)
 ```jsonc
 {
   "schema_version": 1,

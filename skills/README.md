@@ -10,18 +10,30 @@ One project folder = one idea = one product. An installed LVP skill never writes
 
 ```
 skills/
-├── lvp-init-new-idea/        The installable skill (one folder per skill)
-│   ├── SKILL.md              Skill entrypoint (YAML frontmatter: name + description)
-│   └── references/           Self-contained reference material the skill loads
-│       ├── principles.md     The 13 LVP principles (the Constitution)
-│       ├── conventions.md    Operational manual (state schema, journal, tiers)
-│       └── sections/         Question banks: S1-context.md, S2-conditions.md,
-│                             S3-data-privacy.md, S4-features.md
-├── lvp-principles.md         Canonical source copy (NOT installed — see note)
-└── lvp-conventions.md        Canonical source copy (NOT installed — see note)
+├── lvp-init-new-idea/        S0 intake + interview loop (S1–S8) + S9 compiler
+├── lvp-continue/             Resume parked/interrupted pipeline, journal replay
+├── lvp-handoff/              Gap lint (20 files), blueprint.json, builder harness stubs
+├── lvp-recheck-plan/         Adversarial audit (R1–R6), research refresh, fixes in place
+├── lvp-add-feature/          Post-lock feature mini-pipeline, impact matrix, append-only
+├── lvp-build/                Milestone executor, exact verification capture, build log
+├── lvp-personal-brand/       Gated brand kit (BRAND.md, LINKEDIN-PROFILE.md, CONTENT-PLAN.md)
+├── lvp-principles.md         Canonical source copy of Constitution (NOT installed directly)
+└── lvp-conventions.md        Canonical source copy of operational manual (NOT installed directly)
 ```
 
-The loose `lvp-*.md` files at the top of `skills/` are the repo's canonical copies, mirrored verbatim into each skill's `references/`. Only the `lvp-*/` folders (a folder with a `SKILL.md`) are skills and get installed. More pipeline skills (`/lvp-continue`, `/lvp-handoff`, …) will appear here as additional `lvp-<name>/` folders.
+The loose `lvp-*.md` files at the top of `skills/` are the repo's canonical copies, mirrored verbatim into each skill's `references/`. Each `lvp-*/` directory is a self-contained skill with its own `SKILL.md` and `references/` folder.
+
+## Skills catalog
+
+| Skill | Command | Phase | Description |
+|---|---|---|---|
+| **lvp-init-new-idea** | `/lvp-init-new-idea` | S0–S9 | Starts a new product from a raw idea, runs Folder Gate, boots boosters, conducts the interview. |
+| **lvp-continue** | `/lvp-continue` | S0–S9 | Resumes an existing LVP run, repairs state from journal if needed, drives next step. |
+| **lvp-handoff** | `/lvp-handoff` | Post-S9 | Validates 20 bundle files against gaps, emits `blueprint.json`, writes `AGENTS.md` harness stubs. |
+| **lvp-recheck-plan** | `/lvp-recheck-plan` | Audit | Runs R1–R6 adversarial checklist, refreshes stale research live, applies confirmed fixes. |
+| **lvp-add-feature** | `/lvp-add-feature` | Extend | Mini-pipeline to capture, research, analyze impact, and append a post-lock feature. |
+| **lvp-build** | `/lvp-build` | Build | Executes milestones in order, runs exact verification procedures, captures output in build log. |
+| **lvp-personal-brand** | `/lvp-personal-brand` | Post-build | Generates a 3-file brand kit in `brand/`; machine-gated by verified milestones + live check. |
 
 ## Install (preferred): `npx skills add`
 
@@ -55,7 +67,7 @@ Project scope = only inside that project (put the folder in the project repo); g
 
 ## What a correct install looks like
 
-After installing, the skill folder at the destination must contain exactly:
+Each installed skill folder is self-contained. For example:
 
 ```
 lvp-init-new-idea/
@@ -63,21 +75,45 @@ lvp-init-new-idea/
 └── references/
     ├── principles.md
     ├── conventions.md
-    └── sections/
-        ├── S1-context.md
-        ├── S2-conditions.md
-        ├── S3-data-privacy.md
-        └── S4-features.md
+    └── sections/ (S1–S4 question banks)
+
+lvp-recheck-plan/
+├── SKILL.md
+└── references/
+    ├── principles.md
+    ├── conventions.md
+    └── audit-checklist.md
+
+lvp-add-feature/
+├── SKILL.md
+└── references/
+    ├── principles.md
+    ├── conventions.md
+    └── feature-capture.md
+
+lvp-build/
+├── SKILL.md
+└── references/
+    ├── principles.md
+    ├── conventions.md
+    └── build-loop.md
+
+lvp-personal-brand/
+├── SKILL.md
+└── references/
+    ├── principles.md
+    ├── conventions.md
+    └── brand-templates.md
 ```
 
-The skill is self-contained: it references only paths inside its own folder (`references/…`) and, at runtime, the `.lvp/` folder of the project it is run in. Smoke test: open the harness in an empty folder, ask for a new product idea, and confirm the skill runs the Folder Gate and starts S0 intake.
+Every skill references only paths inside its own folder (`references/…`) and, at runtime, the `.lvp/` directory and Blueprint Bundle of the target project. Smoke test: open the harness in an empty folder, run `/lvp-init-new-idea`, and confirm the skill runs the Folder Gate and starts S0 intake.
 
 ## Uninstall
 
-Delete the skill folder from the harness's skills directory (the destinations in the table above). For a manual install, remove what you copied, e.g.:
+Delete the skill folders from the harness's skills directory (the destinations in the table above). For a manual install, remove what you copied, e.g.:
 
 ```bash
-rm -r ~/.claude/skills/lvp-init-new-idea    # or .claude/skills/, .agents/skills/, .gemini/skills/, .zcode/skills/ …
+rm -r ~/.claude/skills/lvp-*    # or .agents/skills/, .gemini/skills/, .zcode/skills/ …
 ```
 
 For a `npx skills add` install, remove the same folder from the harness directory it reported, or use `npx skills list` in the project to see what was installed. Skills do not add config lines or hooks anywhere, so folder removal is the complete uninstall. Project folders created by the pipeline (`.lvp/`) are your data — the skills never remove them.

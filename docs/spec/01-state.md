@@ -68,7 +68,7 @@ All paths are relative to the **project folder** (created by `/lvp-init-new-idea
       "verified": false, "verified_at": null }   // verified by /lvp-build
   ],
   "deployment": null,                      // { status: "live|pending", url, verified_at }
-  "handoff": null                          // filled at /lvp-handoff
+  "handoff": null                          // filled at /lvp-handoff: { status: "done", completed_at }
 }
 ```
 

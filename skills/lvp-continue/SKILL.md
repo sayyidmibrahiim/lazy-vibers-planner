@@ -39,7 +39,7 @@ Every step is idempotent: re-running `/lvp-continue` is always safe.
 
 `state.json` parses and matches the conventions §2 shape → load it, then run the consistency repairs:
 
-- Section statuses win over `pipeline.current_section`. If they disagree, fix `current_section` (the first Section not `done`, in conventions §5 order) and say so in the summary.
+- Section statuses win over `pipeline.current_section`. If they disagree, fix `current_section` (the first Section not `done`, in conventions §5 order — S10 when S0–S9 are all done) and say so in the summary.
 - An answer present in a Section Record file but missing from state is folded back in from the record (records are raw material — never re-ask what a record holds). Say so in the summary.
 - Scope lock has no v1 state field — derive it from the journal: scope is locked iff a `scope_locked` event exists and S7 is `done`. Do this here and in Step 5; do not invent a schema field.
 
@@ -52,10 +52,11 @@ Replay the whole journal in `seq` order onto a fresh state object (shape per con
 | `session_start`, `folder_gate_passed`, `folder_gate_subfolder_created` | project confirmed here; keep payload details for the report |
 | `tier_declared`, `tier_changed` | `model_profile.tier` (+ `declared_at`) |
 | `capability_probe_passed`, `capability_probe_failed` | `model_profile.probe` |
-| `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice` | `boosters` statuses — the last event per booster wins; a core booster never mentioned → `missing`, flagged in the report |
+| `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice` | `boosters` statuses — the last event per booster wins; the `booster_check` sweep names the core list (bootstrap checks every core booster); `license`/`tier` are static per-booster facts — from `CAPABILITIES.md` when the bundle exists, else the core-booster table in `05-boosters.md`; a core booster never mentioned → `missing`, flagged in the report |
 | `section_start` | `sections[S] = { "status": "in_progress", "started_at": ... }`; `current_section` = S |
-| `answer_recorded` | `sections[S].answers[<id>] = { q, a, skipped }` from the payload |
+| `answer_recorded` | `sections[S].answers[<id>] = { q, a, skipped }` from the payload; `project` metadata (`slug`, `name`, `idea_raw`, `user_language`) comes from the S0 section record (verbatim idea, confirmed language, confirmed slug + display name) |
 | `section_done` | `sections[S] = { "status": "done", "record": ..., "completed_at": ... }`; `current_section` = the next Section in conventions §5 order |
+| `section_start` S5, `section_start` S7, `section_done` S9, `build_started`, `build_done` | `project.status` transitions (conventions §2 enum): the fresh state starts at `interview`; S5 start → `researching`, S7 start → `review`, S9 done → `bundled`, `build_started` → `building` (builder active), `build_done` → `complete` |
 | `loop_back_opened` | append the entry to `pipeline.loop_backs` (`resolved_at: null`) |
 | `loop_back_closed` | set `resolved_at` on the matching entry |
 | `scope_locked` | scope-lock evidence (no v1 schema field — see below) |
@@ -64,7 +65,7 @@ Replay the whole journal in `seq` order onto a fresh state object (shape per con
 | `build_started`, `milestone_started`, `milestone_failed`, `build_blocked`, `build_done` | informational — verification results are rebuilt from `VERIFICATION.md`, not from these events |
 | `recheck_*`, `feature_*`, `brand_*` | informational — the report and bundle files on disk own the detail |
 | `doc_generated` | bundle-file progress (compare against the conventions §8 list) |
-| `handoff_started`, `gap_found`, `handoff_done` | handoff progress; `handoff_done` fills `handoff` |
+| `handoff_started`, `gap_found`, `handoff_done` | handoff progress; `handoff_done` fills `handoff` = { "status": "done", "completed_at" } |
 | `error` | `project.status` = "error"; keep the payload for the summary |
 | `context_guard_triggered`, `truncation_recovered`, `resume` | informational — no state effect |
 
@@ -88,11 +89,11 @@ Compare `model_profile.tier` in state with the model actually running now:
 - Determine the current tier from harness config where available; if not determinable, ask init's one-line tier question (large / medium / small). Never guess.
 - Same tier → nothing to do.
 - Any change → journal `tier_changed` (payload: old, new), update `model_profile.tier` + `declared_at`, and re-apply the new tier's rules for the resumed work (conventions §7: batch size, research, compile, reload discipline, booster loading).
-- **Downgrade** (new tier is lower) → re-run the capability probe before any further work. Three checks, graded strictly, each a clean single attempt:
+- **Downgrade** (new tier is lower) → warn first, in User Language (English source): "The model now running is smaller than before, so the capability probe runs again — if it fails, I have to refuse to continue; nothing is lost, the project state stays safe on disk." Then re-run the capability probe before any further work. Three checks, graded strictly, each a clean single attempt:
   1. **Strict JSON** — Prompt: `Return exactly this JSON object, nothing else, with ANSWER replaced by the value of 7×6: {"probe":"json","answer":ANSWER}`. Pass: the reply parses as exactly that object (surrounding whitespace tolerated; no prose, no code fences) with `answer` = 42.
   2. **Three-step order** — Prompt: `Do these steps in order and output only their results, one per line: 1. write the word ALPHA. 2. write the number 2. 3. write GAMMA backwards.` Pass: the reply contains ALPHA, 2, AGMA — in that order.
   3. **Sentence continuation** — Prompt: `Continue this sentence so it makes sense, and write only the continuation: "The cashier scanned the item twice because"`. Pass: a coherent, grammatical completion (no restart, no topic change, no gibberish).
-  - All pass → journal `capability_probe_passed`, update `model_profile.probe`, continue.
+  - All pass → journal `capability_probe_passed` (payload: `{"steps": [...]}` — the ids of the checks that passed: "json", "order", "sentence"), update `model_profile.probe`, continue.
   - Any fail → journal `capability_probe_failed` (payload: which step). Say (English source): "This model failed the capability probe (\<step\>), so it cannot finish what the previous model started. Switch this harness to a larger model, then run `/lvp-continue` again. Nothing is lost — the project state is safe on disk." Stop. Never push through.
 - Upgrade → no probe; `tier_changed` only.
 
@@ -135,9 +136,9 @@ Order of offers:
    - From the first new answer onward, follow the init skill's Section loop engine (its "Section loop engine" section): one checkpoint per answer, the same record shape, decisions `D-NNN` with statuses per principle 12.
    - **S0 special case**: `S0.q1` not recorded → the idea was never captured; run the S0 capture fresh (nothing is being re-asked). Recorded → continue at the language/slug confirmation steps.
 
-### c. Scope locked, bundle incomplete
+### c. Scope locked, S9 not `done` (bundle absent, partial, or fully written but S9 unclosed)
 
-Offer to finish generation (S9): the remaining files per the conventions §8 list, one file per turn (T3: one file section per turn, append-chunks), `doc_generated` + one checkpoint per file. Existing bundle files are skipped; regenerating one happens only on an explicit per-file user request.
+Offer to finish generation (S9): the remaining files per the conventions §8 list, one file per turn (T3: one file section per turn, append-chunks), `doc_generated` + one checkpoint per file. Existing bundle files are skipped; regenerating one happens only on an explicit per-file user request. When no file is missing, the remaining work is closing S9 (`section_done` + one checkpoint).
 
 ### d. Bundled (S9 done, `handoff` open)
 

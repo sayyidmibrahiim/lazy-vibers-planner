@@ -419,7 +419,7 @@ Every finding carries one line of evidence: the record row or answer id it comes
 
 1. Open a `pipeline.loop_backs[]` entry — `{ "id": "L-NN", "from": "S6", "to": "<owning S1–S4 section>", "reason": "<one line>", "opened_at": <now>, "resolved_at": null }`; journal `loop_back_opened`. One checkpoint.
 2. Jump to the owning section's procedure block and run targeted micro-batches on the loop-back's reason only — the section is not re-run (its exit criteria still hold); new answers get fresh `S<NN>.qNN` ids, never re-asking recorded ones; note the loop-back in that section's record.
-3. Close: set `resolved_at`; journal `loop_back_closed`. When closing, search the Section Records (and the recorded state answers) for claims the resolution overrides and update each one's affected content as part of closing the entry (e.g. a feature's F-NN script promising push notifications) — records must never keep a claim the decisions have overridden; journal nothing extra (the `loop_back_closed` payload lists the touched records). One checkpoint. Return to S6.
+3. Close: set `resolved_at`; journal `loop_back_closed`. When closing, search the Section Records for claims the resolution overrides and update each one's affected content as part of closing the entry (e.g. a feature's F-NN script promising push notifications) — records must never keep a claim the decisions have overridden; the state answers keep their capture-time text (journal + state preserve the original answer; the corrected wording lives in the record); journal nothing extra (the `loop_back_closed` payload lists the touched records). One checkpoint. Return to S6.
 4. Re-run the affected findings against the new answers. A new blocking risk opens a fresh entry (L numbering continues). Repeat until none remains.
 5. If a session dies mid-loop-back, `/lvp-continue` reads the open entry (`resolved_at` null) and resumes the targeted batch — `current_section` stays "S6" throughout.
 
@@ -593,7 +593,7 @@ Purpose: compile the Section Records + `decisions[]` + `milestones[]` into the 2
 
 **Owner documents** — OVERVIEW.md and HANDOVER.md are written FOR the non-technical owner: plain language (strictest SimpleEnglish reading level in OVERVIEW.md), real numbers in the cost table, no step that assumes reading code. Artifacts stay English; the web UI translates to User Language (principle 5, conventions §4).
 
-**Branding check (conventions §2)** — offer it while drafting OVERVIEW.md: the display name may still change here. A change is one `user_confirmed` decision, applied across the bundle before the cross-check runs.
+**Branding check (conventions §2)** — offer it while drafting OVERVIEW.md: the display name may still change here. A change is one `user_confirmed` decision, applied across the bundle before the cross-check runs. Any branding rename applies to `project.name` in state **before** the bundle is compiled, so OVERVIEW.md always carries the final name.
 
 **User questions** — none by default; targeted batches (`S9.qNN`, engine rules) only when a compile gap needs the user's call — a real naming choice, or a conflict the records cannot resolve. Controls stay visible.
 

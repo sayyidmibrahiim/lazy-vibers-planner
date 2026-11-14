@@ -43,6 +43,8 @@ Every step is idempotent: re-running `/lvp-continue` is always safe.
 - An answer present in a Section Record file but missing from state is folded back in from the record (records are raw material — never re-ask what a record holds). Say so in the summary.
 - Scope lock has no v1 state field — derive it from the journal: scope is locked iff a `scope_locked` event exists and S7 is `done`. Do this here and in Step 5; do not invent a schema field.
 
+The repair state-write rides the run's `resume` append (one checkpoint at resume) — conventions §3's "every state mutation emits at least one event" holds under this named interpretation.
+
 ### 2b. Damaged or missing state, journal present → rebuild by journal replay
 
 Replay the whole journal in `seq` order onto a fresh state object (shape per conventions §2). Event effects:
@@ -52,9 +54,9 @@ Replay the whole journal in `seq` order onto a fresh state object (shape per con
 | `session_start`, `folder_gate_passed`, `folder_gate_subfolder_created` | project confirmed here; keep payload details for the report |
 | `tier_declared`, `tier_changed` | `model_profile.tier` (+ `declared_at`) |
 | `capability_probe_passed`, `capability_probe_failed` | `model_profile.probe` |
-| `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice` | `boosters` statuses — the last event per booster wins; the `booster_check` sweep names the core list (bootstrap checks every core booster); `license`/`tier` are static per-booster facts — from `CAPABILITIES.md` when the bundle exists, else the core-booster table in `05-boosters.md`; a core booster never mentioned → `missing`, flagged in the report |
+| `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice` | `boosters` statuses — the last journaled event per booster wins; a journaled `present` maps to `installed` (the only enum-legal mapping); bundle documents (`OVERVIEW.md` Limitations, `CAPABILITIES.md`) may add a loud context note to the reconstruction report but never override a journaled status; the `booster_check` sweep names the core list (bootstrap checks every core booster); `license`/`tier` are static per-booster facts — from `CAPABILITIES.md` when the bundle exists, else the core-booster table in `05-boosters.md`; a core booster never mentioned → `missing`, flagged in the report |
 | `section_start` | `sections[S] = { "status": "in_progress", "started_at": ... }`; `current_section` = S |
-| `answer_recorded` | `sections[S].answers[<id>] = { q, a, skipped }` — q/a verbatim from the payload when it carries the text; a legacy payload without q/a text folds q/a from the answer's own Section Record line; `project` metadata (`slug`, `name`, `idea_raw`, `user_language`) comes from the S0 section record (verbatim idea, confirmed language, confirmed slug + display name) |
+| `answer_recorded` | `sections[S].answers[<id>] = { q, a, skipped }` — q/a verbatim from the payload when it carries the text; a legacy payload without q/a text folds q/a from the answer's own Section Record line; `project` metadata: `slug`, `idea_raw`, `user_language` come from the S0 section record (verbatim idea, confirmed language, confirmed slug); the display `name` is the bundle's `OVERVIEW.md` H1 when the bundle exists (compiled at S9, post-branding), else the S0 record's display name; `created_at` = the ts of the `section_start` S0 event |
 | `section_done` | `sections[S] = { "status": "done", "record": ..., "completed_at": ... }`; `current_section` = the next Section in conventions §5 order |
 | `section_start` S5, `section_start` S7, `section_done` S9, `build_started`, `build_done` | `project.status` transitions (conventions §2 enum): the fresh state starts at `interview`; S5 start → `researching`, S7 start → `review`, S9 done → `bundled`, `build_started` → `building` (builder active), `build_done` → `complete` |
 | `loop_back_opened` | append the entry to `pipeline.loop_backs` (`resolved_at: null`) |
@@ -62,7 +64,7 @@ Replay the whole journal in `seq` order onto a fresh state object (shape per con
 | `scope_locked` | scope-lock evidence (no v1 schema field — see below) |
 | `milestone_verified` | set `milestones[<id>].verified = true` + `verified_at` from the payload |
 | `deployment_verified` | `deployment = { "status": "live", "url", "verified_at" }` from the payload |
-| `build_started`, `milestone_started`, `milestone_failed`, `build_blocked`, `build_done` | informational — verification results are rebuilt from `VERIFICATION.md`, not from these events |
+| `build_started`, `milestone_started`, `milestone_failed`, `build_blocked`, `build_done` | informational (status transitions per the row above) — verification results are rebuilt from `VERIFICATION.md`, not from these events |
 | `recheck_*`, `feature_*`, `brand_*` | informational — the report and bundle files on disk own the detail |
 | `doc_generated` | bundle-file progress (compare against the conventions §8 list) |
 | `handoff_started`, `gap_found`, `handoff_done` | handoff progress; `handoff_done` fills `handoff` = { "status": "done", "completed_at" } |
@@ -73,13 +75,13 @@ Three things the journal cannot supply directly:
 
 - **Scope lock** — the v1 schema has no scope field. Scope is locked iff a `scope_locked` event exists in the journal (and S7 is done). Derive it; do not invent a schema field.
 - **Milestones** — no journal event type covers them. When S8 is done, rebuild `milestones[]` from the Section Record `.lvp/docs/sections/S8-milestones.md`. If that record is missing too, milestones are reported as unrecoverable.
-- **Decisions** — no journal event type covers them either. Rebuild `decisions[]` from `DECISIONS.md` when the bundle exists (the mirror is maintained through loop-back mutations, so its text is the freshest), else from the decision lines in the Section Records — ids and statuses are the same in both sources. A decision missing from both surfaces is reported as unrecoverable (loudly).
+- **Decisions** — no journal event type covers them either. Rebuild `decisions[]` from `DECISIONS.md` when the bundle exists — the mirror is compiled at S9 from the post-loop-back records, so its wording is the freshest; rows are never rewritten after S9 (spec 04) — else from the decision lines in the Section Records — ids and statuses are the same in both sources. A decision missing from both surfaces is reported as unrecoverable (loudly).
 
 An `answer_recorded` whose payload text is absent or unreadable, and whose Section Record does not hold it either, is reported as unrecoverable — ask the user to re-state only that one, saying plainly why (loud degradation, not a silent re-ask).
 
 Then:
 
-1. Write the rebuilt `state.json` (one checkpoint). Never touch existing journal lines.
+1. Write the rebuilt `state.json` (one checkpoint). Before writing it, the corrupt file MAY be preserved once as `.lvp/state.corrupt-<date>.json`; when present, name it in the reconstruction report. The backup is not part of the canonical write set. Never touch existing journal lines.
 2. Report plainly (User Language): what was reconstructed (Sections and statuses, answer counts, decisions, loop-backs, milestones, tier), everything derived indirectly (scope from the journal event, milestones from the S8 record, decisions from DECISIONS.md or the Section Records), and every event that could not be translated, by `seq`.
 3. Journal `resume` (payload: `state_rebuilt: true` + the untranslatable count).
 
@@ -139,7 +141,7 @@ Order of offers:
 
 ### c. Scope locked, S9 not `done` (bundle absent, partial, or fully written but S9 unclosed)
 
-Offer to finish generation (S9): the remaining files per the conventions §8 list, one file per turn (T3: one file section per turn, append-chunks), `doc_generated` + one checkpoint per file. Existing bundle files are skipped; regenerating one happens only on an explicit per-file user request. When no file is missing, the remaining work is closing S9 (`section_done` + one checkpoint).
+Offer to finish generation (S9): the remaining files per the conventions §8 list, one file per turn (T3: one file section per turn, append-chunks), `doc_generated` + one checkpoint per file. Existing bundle files are skipped; a 0-byte file, or a file missing the structure conventions §8 requires, counts as *missing required structure* — it is offered as remaining work (the same class as truncation recovery, conventions §7), never as existing-and-skipped. Regenerating one happens only on an explicit per-file user request. When no file is missing, the remaining work is closing S9 (`section_done` + one checkpoint).
 
 ### d. Bundled (S9 done, `handoff` open)
 

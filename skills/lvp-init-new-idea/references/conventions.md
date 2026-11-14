@@ -201,5 +201,5 @@ A Checkpoint = one Journal write + one State write, together.
 Checkpoint moments: every answer · every Section start and done · every Booster install or choice · every generated file · every error · each Handoff step.
 
 - Interruption-safe: a session that dies leaves a consistent `state.json` at the last checkpoint; work loss is at most the current unanswered micro-batch.
-- Rebuild: load `state.json`; if it is unreadable, replay the Journal and report what was reconstructed.
+- Rebuild: load `state.json`; if it is unreadable, replay the Journal and report what was reconstructed; the corrupt file MAY be preserved once as `.lvp/state.corrupt-<date>.json` (not part of the canonical write set).
 - Idempotency: Sections marked `done` are never re-run; re-running the Handoff re-lints instead of regenerating; regeneration is explicit and per file.

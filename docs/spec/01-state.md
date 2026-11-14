@@ -108,5 +108,5 @@ Web UI variant: the UI supplies an absolute path via a folder picker; the same c
 
 - **Checkpoint moments** (journal write + state save): every answer, every Section start/done, every booster install/choice, every generated file, every error, handoff steps.
 - Interruption-safe: any session that dies leaves a consistent `state.json` (last checkpoint) — work loss is at most the current unanswered micro-batch.
-- `/lvp-continue` rebuild: load `state.json`; if unreadable → replay journal; report what was reconstructed.
+- `/lvp-continue` rebuild: load `state.json`; if unreadable → replay journal; report what was reconstructed. A rebuild may preserve the corrupt state file once as `.lvp/state.corrupt-<date>.json` before overwriting; it is not part of the canonical write set.
 - Idempotency: sections marked `done` are never re-run; re-running `/lvp-handoff` re-lints instead of regenerating everything (regeneration is explicit, per file).

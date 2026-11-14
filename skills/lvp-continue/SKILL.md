@@ -54,7 +54,7 @@ Replay the whole journal in `seq` order onto a fresh state object (shape per con
 | `capability_probe_passed`, `capability_probe_failed` | `model_profile.probe` |
 | `booster_check`, `booster_install_ok`, `booster_install_failed`, `booster_choice` | `boosters` statuses — the last event per booster wins; the `booster_check` sweep names the core list (bootstrap checks every core booster); `license`/`tier` are static per-booster facts — from `CAPABILITIES.md` when the bundle exists, else the core-booster table in `05-boosters.md`; a core booster never mentioned → `missing`, flagged in the report |
 | `section_start` | `sections[S] = { "status": "in_progress", "started_at": ... }`; `current_section` = S |
-| `answer_recorded` | `sections[S].answers[<id>] = { q, a, skipped }` from the payload; `project` metadata (`slug`, `name`, `idea_raw`, `user_language`) comes from the S0 section record (verbatim idea, confirmed language, confirmed slug + display name) |
+| `answer_recorded` | `sections[S].answers[<id>] = { q, a, skipped }` — q/a verbatim from the payload when it carries the text; a legacy payload without q/a text folds q/a from the answer's own Section Record line; `project` metadata (`slug`, `name`, `idea_raw`, `user_language`) comes from the S0 section record (verbatim idea, confirmed language, confirmed slug + display name) |
 | `section_done` | `sections[S] = { "status": "done", "record": ..., "completed_at": ... }`; `current_section` = the next Section in conventions §5 order |
 | `section_start` S5, `section_start` S7, `section_done` S9, `build_started`, `build_done` | `project.status` transitions (conventions §2 enum): the fresh state starts at `interview`; S5 start → `researching`, S7 start → `review`, S9 done → `bundled`, `build_started` → `building` (builder active), `build_done` → `complete` |
 | `loop_back_opened` | append the entry to `pipeline.loop_backs` (`resolved_at: null`) |
@@ -69,17 +69,18 @@ Replay the whole journal in `seq` order onto a fresh state object (shape per con
 | `error` | `project.status` = "error"; keep the payload for the summary |
 | `context_guard_triggered`, `truncation_recovered`, `resume` | informational — no state effect |
 
-Two things the journal cannot supply directly:
+Three things the journal cannot supply directly:
 
 - **Scope lock** — the v1 schema has no scope field. Scope is locked iff a `scope_locked` event exists in the journal (and S7 is done). Derive it; do not invent a schema field.
 - **Milestones** — no journal event type covers them. When S8 is done, rebuild `milestones[]` from the Section Record `.lvp/docs/sections/S8-milestones.md`. If that record is missing too, milestones are reported as unrecoverable.
+- **Decisions** — no journal event type covers them either. Rebuild `decisions[]` from `DECISIONS.md` when the bundle exists (the mirror is maintained through loop-back mutations, so its text is the freshest), else from the decision lines in the Section Records — ids and statuses are the same in both sources. A decision missing from both surfaces is reported as unrecoverable (loudly).
 
-An `answer_recorded` whose payload text is unreadable, and whose Section Record does not hold it either, is reported as unrecoverable — ask the user to re-state only that one, saying plainly why (loud degradation, not a silent re-ask).
+An `answer_recorded` whose payload text is absent or unreadable, and whose Section Record does not hold it either, is reported as unrecoverable — ask the user to re-state only that one, saying plainly why (loud degradation, not a silent re-ask).
 
 Then:
 
 1. Write the rebuilt `state.json` (one checkpoint). Never touch existing journal lines.
-2. Report plainly (User Language): what was reconstructed (Sections and statuses, answer counts, decisions, loop-backs, milestones, tier), everything derived indirectly (scope from the journal event, milestones from the S8 record), and every event that could not be translated, by `seq`.
+2. Report plainly (User Language): what was reconstructed (Sections and statuses, answer counts, decisions, loop-backs, milestones, tier), everything derived indirectly (scope from the journal event, milestones from the S8 record, decisions from DECISIONS.md or the Section Records), and every event that could not be translated, by `seq`.
 3. Journal `resume` (payload: `state_rebuilt: true` + the untranslatable count).
 
 ## Step 3 — Tier check (cross-model resume)

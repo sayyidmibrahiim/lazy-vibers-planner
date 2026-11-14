@@ -4,11 +4,19 @@
 
 **Blocked by:** 03 (an in-progress interview must exist to resume meaningfully).
 
-**Status:** ready-for-agent
+**Status:** done (2026-11-13) — 6/6 criteria verified via 4 black-box verification agents + 3 independent judge rounds (ecc:agent-evaluator); two owner-approved fixes applied (SKILL.md 5e heading, spec 03 item 3) and re-verified with zero regressions. Evidence archived in `.scratch/lvp-core/verify-06-continue/`.
 
-- [ ] Session killed mid-interview resumes with zero re-asked questions
-- [ ] Corrupted `state.json` rebuilt from journal replay with a reconstruction report
-- [ ] Bundled project → offers handoff; scope-locked → offers handoff or recheck; interviewing → resumes
-- [ ] Sections marked `done` are never re-run (idempotency)
-- [ ] Progress summary understandable to a non-technical owner in their language
-- [ ] Cross-model resume: tier change journals `tier_changed`, re-applies tier rules, re-runs the probe on downgrade (docs/spec/06-model-tiers.md)
+- [x] Session killed mid-interview resumes with zero re-asked questions — proven live at dogfood (ticket 09: genuine session-kill → resume at exact boundary, zero re-asks)
+- [x] Corrupted `state.json` rebuilt from journal replay with a reconstruction report — verified 2026-11-13: both corruption variants (truncated JSON, wrong-schema JSON) rebuild byte-identical to the healthy snapshot (sha d586dd21…, deterministic); reconstruction report printed in Bahasa Indonesia per SKILL.md Step 2b; only `resume` appended (seq 111, payload `state_rebuilt:true, untranslatable:0`); 30/30 non-target files untouched. Evidence: `verify-06-continue/report-corrupt-rebuild.md`
+- [x] Bundled project → offers handoff; scope-locked → finishes S9 then handoff; interviewing → resumes — DONE (verified 2026-11-13; clause-2 text corrected per owner decision — original wording "scope-locked → offers handoff or recheck" was stale vs design): clause 1 PASS (bundled + handoff open → Step 5d offers `/lvp-handoff`, incl. the re-run sub-clause for a started-unfinished handoff); clause 3 PASS (dogfood ticket 09 + run-B2 resume offer); clause 2 resolved by amending spec 03 item 3 so finish-S9-first is canonical for scope-locked pre-bundle (recheck offered post-bundle per branch e). Branch-e heading hole fixed and re-verified operationally: hole closed, branch d and `complete` regressions clean. Evidence: `verify-06-continue/report-handoff-positions.md`, `verify-06-continue/report-fix-regression.md`
+- [x] Sections marked `done` are never re-run (idempotency) — verified 2026-11-13: zero interview events on resume of the completed pipeline; skipped answer preserved as consciously skipped; done sections untouched
+- [x] Progress summary understandable to a non-technical owner in their language — verified 2026-11-13: "Ringkasan proyek Anda" printed in Bahasa Indonesia with plain-language position, answer count, and next action
+- [x] Cross-model resume: tier change journals `tier_changed`, re-applies tier rules, re-runs the probe on downgrade (docs/spec/06-model-tiers.md) — verified 2026-11-13: upgrade → `tier_changed` + rules re-applied, no probe; downgrade → probe re-run literally (3 checks) + `capability_probe_passed` (seq 112); same tier → no event, state byte-identical. Evidence: `verify-06-continue/report-tier-resume.md`
+
+## Verification findings (2026-11-13)
+
+Independent judge graded all rounds (final verdict SAFE-TO-FINALIZE, 5.0/5): skill/spec quotes verbatim-accurate, evidence sha-witnessed, repo untouched (32/32 fixture files identical per run). Outcome:
+
+1. **Step 5 branch hole — RESOLVED (2026-11-13):** SKILL.md 5e heading now "Bundled (`handoff` done), building, or complete"; operationally re-verified — hole closed, branch d (handoff open) and status `complete` regressions clean. Found independently by 2 agents.
+2. **Box 3 clause 2 — RESOLVED (2026-11-13, owner decision):** spec 03 item 3 amended — finish-S9-first is canonical for scope-locked pre-bundle; handoff offered when bundled; add-feature/recheck pointers when bundled + handoff done. No SKILL.md branch-c change; `/lvp-handoff` preconditions untouched.
+3. **Minor gaps (recorded, non-blocking, tracked in ticket 16):** `answer_recorded` payloads carry no q/a text though the rebuild table says "from the payload"; project metadata + `decisions[]` have no journal source (recovered from the S0 record / DECISIONS.md mirror); no scripted downgrade warning in Step 3 (conventions §7 asks for one); `capability_probe_passed` payload undocumented; mid-S9 crash window (bundle complete, S9 in_progress) matches no branch; Step 2a repair rule has no target when all sections are done; spec 03 item 3's compressed "run handoff (if bundled)" overlaps the bundled+handoff-done position (disambiguated by the following "(if bundled, handoff done)" clause and branch d's "open" gate — judge nit, non-blocking).

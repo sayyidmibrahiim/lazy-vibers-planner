@@ -32,7 +32,7 @@ Local-only Next.js 16 app: idea -> 4 interview questions -> 5 generated markdown
 
 ## Conventions
 
-- User-facing copy, validation/error messages, and LLM prompts are Bahasa Indonesia (`<html lang="id">`, Indonesian README). Prompts require output language to match the user's idea language. Do not translate UI strings, prompts, or error text to English when editing them.
+- User-facing copy, validation/error messages, and LLM prompts are Bahasa Indonesia (`<html lang="id">`; the README is English). Prompts require output language to match the user's idea language. Do not translate UI strings, prompts, or error text to English when editing them.
 - Route error mapping: 400 validation, 404 missing record, 502 LLM or parse failure. Error bodies are `{ error: string }` in Indonesian.
 - No auth by design; this is a local tool. Do not add auth or multi-user state unless asked. README documents loopback binding for exposure.
 - Route handler `params` are Promises in Next 16 (`await params`); layouts use the generated global `LayoutProps<"/">` type.

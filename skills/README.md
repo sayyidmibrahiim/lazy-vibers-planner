@@ -29,7 +29,7 @@ The loose `lvp-*.md` files at the top of `skills/` are the repo's canonical copi
 |---|---|---|---|
 | **lvp-init-new-idea** | `/lvp-init-new-idea` | S0–S9 | Starts a new product from a raw idea, runs Folder Gate, boots boosters, conducts the interview. |
 | **lvp-continue** | `/lvp-continue` | S0–S9 | Resumes an existing LVP run, repairs state from journal if needed, drives next step. |
-| **lvp-handoff** | `/lvp-handoff` | Post-S9 | Validates 20 bundle files against gaps, emits `blueprint.json`, writes `AGENTS.md` harness stubs. |
+| **lvp-handoff** | `/lvp-handoff` | Post-S9 | Validates 20 bundle files against gaps, emits `blueprint.json`, writes the `CLAUDE.md`/`GEMINI.md` stubs pointing at `AGENTS.md`, composes the builder entry prompt. |
 | **lvp-recheck-plan** | `/lvp-recheck-plan` | Audit | Runs R1–R6 adversarial checklist, refreshes stale research live, applies confirmed fixes. |
 | **lvp-add-feature** | `/lvp-add-feature` | Extend | Mini-pipeline to capture, research, analyze impact, and append a post-lock feature. |
 | **lvp-build** | `/lvp-build` | Build | Executes milestones in order, runs exact verification procedures, captures output in build log. |
@@ -75,7 +75,8 @@ lvp-init-new-idea/
 └── references/
     ├── principles.md
     ├── conventions.md
-    └── sections/ (S1–S4 question banks)
+    ├── bundle/ (bundle file templates for S9)
+    └── sections/ (S1–S8 question banks)
 
 lvp-recheck-plan/
 ├── SKILL.md

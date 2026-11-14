@@ -1,127 +1,85 @@
 # Lazy Vibe Planner
 
-Ubah ide mentah menjadi blueprint software: interview singkat, lalu lima dokumen teknis yang bisa langsung dipakai membangun.
+Turn a raw idea into a verified Blueprint Bundle that any AI agent can build.
 
-Alur produk:
+## What it is
 
-1. Tulis ide.
-2. Jawab empat pertanyaan interview.
-3. Generate lima dokumen secara berurutan: PRD, functional requirements, data model, API contract, architecture.
-4. Baca, edit, salin, atau revisi tiap dokumen lewat AI assistant.
+This repo holds two related things.
 
-Semua data tersimpan lokal. Tidak ada akun, pembayaran, atau layanan pihak ketiga.
+The LVP skills are portable agent skills for the LVP pipeline. The pipeline interviews a non-technical owner through sections S0 to S9. The result is a verified Blueprint Bundle of 20 files that any AI agent can build from.
 
-## Stack
+The web MVP is a local Next.js app. You write an idea and answer four interview questions. The app then generates five markdown documents: PRD, requirements, data model, API contract, and architecture. Generation runs through an OpenAI-compatible LLM proxy. The app is single-user and has no auth.
 
-- Next.js 16 (App Router, React 19, TypeScript)
-- Tailwind CSS v4
-- SQLite lewat `node:sqlite` (tanpa server database terpisah)
-- `react-markdown` + `remark-gfm` untuk preview dokumen
-- Endpoint LLM OpenAI-compatible (proxy lokal)
+The web MVP is an early prototype. The LVP skills are the complete pipeline, and they run on any harness that reads a SKILL.md file.
 
-## Menjalankan
+## How the pipeline works
 
-Butuh Node.js 24 atau lebih baru karena memakai `node:sqlite`.
+Each skill is one folder with a SKILL.md file and its own references. The table is the short map. The full catalog is in [skills/README.md](skills/README.md).
+
+| Skill | What it does | Result |
+|---|---|---|
+| `/lvp-init-new-idea` | Runs the Folder Gate and the interview S0–S9 (intake, context, conditions, data and privacy, features, deep research, feasibility loop, scope lock, milestone plan, compile) | A Blueprint Bundle of 20 files in the project folder |
+| `/lvp-continue` | Resumes a run or rebuilds the state from the journal | A restored state and an offer of the next step |
+| `/lvp-handoff` | Lints all 20 bundle files, emits `blueprint.json`, and writes the builder stubs | A bundle ready for any builder harness |
+| `/lvp-recheck-plan` | Runs the adversarial audit R1–R6 | A RECHECK report and applied fixes |
+| `/lvp-add-feature` | Adds one post-lock feature through a mini-pipeline | An updated bundle, append-only |
+| `/lvp-build` | Executes the milestones and runs each verification procedure | A build log with verified milestones |
+| `/lvp-personal-brand` | Builds a brand kit after the milestones are verified | Three files in `brand/` |
+
+## State and rebuild guarantee
+
+One folder is one product. Every project folder holds a `.lvp/` folder. It stores `state.json`, the append-only `journal.ndjson`, and the Section Records. The journal records every answer with its verbatim question and answer text. If `state.json` is damaged, `/lvp-continue` rebuilds it by replaying the journal. The skills never degrade in silence.
+
+## Install the skills
+
+The preferred install is the skills CLI:
+
+```bash
+npx skills add <owner>/lazy-vibers-planner
+```
+
+You can also copy a skill folder into the skills directory of your harness. Supported harnesses include ZCode, Claude Code, Codex, and Gemini CLI. See [skills/README.md](skills/README.md) for the full install table and the uninstall steps.
+
+## Web MVP quick start
+
+The web app needs Node.js 24 or newer. It stores data in SQLite through `node:sqlite`.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Buka `http://localhost:3000`.
+Open `http://localhost:3000`.
 
-Mode produksi:
+Generation needs the LLM proxy at `127.0.0.1:17070`. If the proxy is down, generation fails with a 502 error.
+
+All settings are optional. Copy `.env.example` to `.env.local` only to override defaults.
+
+For production, run:
 
 ```bash
 npm run build
 npm start
 ```
 
-## Konfigurasi
-
-Semua pengaturan opsional. Salin `.env.example` menjadi `.env.local` kalau perlu diubah.
-
-| Variabel | Default | Keterangan |
-|---|---|---|
-| `LLM_BASE_URL` | `http://127.0.0.1:17070/v1` | Endpoint OpenAI-compatible, tanpa `/chat/completions`. |
-| `LLM_MODEL` | `deepseek-v4.1-flash-free` | Nama model yang dikirim ke endpoint. |
-| `LLM_API_KEY` | kosong | Diisi kalau proxy membutuhkan bearer token. |
-| `DATABASE_PATH` | `./data/planner.db` | Lokasi file SQLite. |
-
-Proxy yang dipakai harus mendukung `POST /chat/completions` dengan format OpenAI. Respons streaming SSE juga diterima.
-
-## Data
-
-Database dibuat otomatis di `data/planner.db` saat pertama kali dipakai. Folder `data/` diabaikan git.
-
-Tabel:
-
-- `projects`: ide, nama, status.
-- `questions`: pertanyaan interview dan jawabannya.
-- `docs`: isi markdown tiap dokumen.
-
-Menghapus `data/planner.db` menghapus semua proyek.
-
-## Keamanan
-
-Tidak ada autentikasi. Siapa pun yang bisa menjangkau port aplikasi bisa membaca dan mengubah semua proyek. Jalankan di mesin lokal, atau di belakang reverse proxy yang punya autentikasi.
-
-Untuk membatasi akses ke loopback saja:
+The app has no auth. To limit access to loopback, run:
 
 ```bash
 npm start -- -H 127.0.0.1
 ```
 
-## API
+## Language note
 
-| Method | Path | Fungsi |
-|---|---|---|
-| `POST` | `/api/projects` | Membuat proyek dan interview dari sebuah ide. |
-| `GET` | `/api/projects/[id]` | Mengambil proyek, pertanyaan, dan dokumen. |
-| `POST` | `/api/projects/[id]/blueprint` | Generate dokumen, respons NDJSON. |
-| `PATCH` | `/api/docs/[id]` | Menyimpan hasil edit manual. |
-| `POST` | `/api/docs/[id]/revise` | Merevisi dokumen dengan instruksi bahasa biasa. |
+The skill files and the spec docs are English. The web app UI, its prompts, and its error messages are Bahasa Indonesia by design.
 
-Generate bersifat idempoten per dokumen: dokumen yang sudah ada dilewati, jadi permintaan ulang melanjutkan sisa dokumen tanpa menimpa yang selesai.
+## Docs
 
-## Batasan MVP
+- [docs/spec/00-overview.md](docs/spec/00-overview.md): the spec overview. Read it first. The spec continues through 06.
+- [GLOSSARY.md](GLOSSARY.md): the domain glossary.
+- [docs/adr/](docs/adr/): the architecture decision records.
+- [AGENTS.md](AGENTS.md): the contract for contributors and agents.
+- [skills/README.md](skills/README.md): the skill catalog and install details.
 
-- Tanpa autentikasi dan tanpa multi-user.
-- Tanpa riwayat versi dokumen.
-- Satu permintaan LLM per dokumen, berurutan. Tidak ada queue atau worker terpisah.
-- Kualitas dan bahasa keluaran bergantung pada model di balik proxy.
+## License
 
-## LVP Pipeline Skills
-
-This repo also ships the seven skills behind the LVP (Lazy Vibe Planner) pipeline, a model-agnostic flow that turns a raw idea from a non-technical owner into a verified Blueprint Bundle and working product:
-
-- `/lvp-init-new-idea` — intake (S0), interview (S1–S8), and 20-file bundle compiler (S9).
-- `/lvp-continue` — resume interrupted/parked pipelines, rebuild damaged state from journal.
-- `/lvp-handoff` — 20-file gap lint, emit `blueprint.json`, generate builder harness stubs.
-- `/lvp-recheck-plan` — R1–R6 adversarial audit, live research refresh, fix plan applied in place.
-- `/lvp-add-feature` — additive mini-pipeline for post-lock features with cross-bundle impact analysis.
-- `/lvp-build` — sequential milestone executor with verbatim verification capture.
-- `/lvp-personal-brand` — post-build brand kit (`brand/`); machine-gated by verified milestones + live check.
-
-Each skill lives in its own folder under `skills/` (`skills/<name>/SKILL.md` plus self-contained `references/`), runs anywhere a harness can read the Agent Skills format, and works on a one-folder-one-product model: every project gets its own folder with disk-based state under `.lvp/`. Install with `npx skills add <owner>/lazy-vibers-planner` (or follow the per-harness manual-copy paths), and uninstall by deleting the skill folders — full instructions, including directory structures and license details (NC boosters stay runtime dependencies, never vendored), are in [skills/README.md](skills/README.md).
-
-## License & Credits
-
-**License:** MIT — see [LICENSE](LICENSE). Free to use, modify, and distribute with attribution. (The owner chose MIT over Apache-2.0 for simplicity; the pipeline's own dependency policy toward NC-licensed boosters is stricter and is documented in [ADR-0001](docs/adr/0001-permissive-first-license-policy.md).)
-
-This pipeline stands on the shoulders of open source — deep thanks to the projects that shaped it, feed it, or were distilled into it (full catalog with verification dates: [docs/research/agent-skill-catalog.md](docs/research/agent-skill-catalog.md)):
-
-**Methodology & inspiration**
-- [github/spec-kit](https://github.com/github/spec-kit) — the spec-driven development pipeline this project set out to reimagine for non-technical users
-- [obra/superpowers](https://github.com/obra/superpowers) — verification-before-completion and plan-writing discipline
-- Matt Pocock's engineering skills (wayfinder, research, grilling, to-spec, to-tickets) — the decision-grilling and tracer-bullet ticketing workflow used to design this very pipeline
-- [storytold/craft-anything](https://github.com/storytold/craft-anything) — the Study → Build → Check → Ready loop pattern
-
-**Quality rulebooks** (distilled into LVP's Constitution and its compile passes)
-- [blader/humanizer](https://github.com/blader/humanizer) · [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) · [AminBlg/SimpleEnglish](https://github.com/AminBlg/SimpleEnglish) · [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) · [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)
-
-**Patterns & boosters** (runtime dependencies — credited, never vendored)
-- [product-on-purpose/pm-skills](https://github.com/product-on-purpose/pm-skills) (Apache-2.0) · [Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec) · [browserbase/skills](https://github.com/browserbase/skills) · [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) · [vercel-labs/skills](https://github.com/vercel-labs/skills) · [agentsmd/agents.md](https://github.com/agentsmd/agents.md) · [anthropics/skills](https://github.com/anthropics/skills)
-
-**MCP servers the pipeline recommends**
-- [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) · [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) · [upstash/context7](https://github.com/upstash/context7) · [firecrawl/firecrawl-mcp-server](https://github.com/firecrawl/firecrawl-mcp-server) · [supabase/mcp](https://github.com/supabase/mcp)
+The repo is licensed under MIT. See [LICENSE](LICENSE). The skills follow a permissive-first policy ([ADR-0001](docs/adr/0001-permissive-first-license-policy.md)): boosters with NC licenses are runtime dependencies, credited and never vendored.

@@ -143,7 +143,7 @@ Offer to finish generation (S9): the remaining files per the conventions §8 lis
 
 Offer `/lvp-handoff` — its precondition (S1–S8 done + scope locked) is met. If a handoff started but never finished, offer to re-run it there (it re-lints instead of regenerating). If that skill is not installed in this harness, say so and point to it; do not improvise the handoff inside this skill.
 
-### e. Building or complete
+### e. Bundled (`handoff` done), building, or complete
 
 Offer the v1 pointers: `/lvp-build` (execute the next unverified milestone), `/lvp-add-feature` (a new feature through a mini-pipeline), or `/lvp-recheck-plan` (an adversarial audit of decisions + bundle). These are v1 skills — mention them as pointers only; do not improvise them here. When every milestone is verified and `state.deployment.status` = "live", also point at `/lvp-personal-brand`.
 

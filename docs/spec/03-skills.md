@@ -25,7 +25,7 @@ Skills are plain markdown instruction files (Agent Skills format) living in `ski
 **Flow**:
 1. Read `.lvp/state.json`. Missing → explain and suggest `/lvp-init-new-idea` (with Folder Gate guidance). Corrupt → rebuild by journal replay, report what was reconstructed.
 2. Print a plain-language progress summary: project name, current Section, answered/total, pending loop-backs, booster status, last activity time.
-3. Offer the right next action: resume interview / answer pending loop-back / run handoff (if ready) / suggest `add-feature` or `recheck-plan` (if bundled).
+3. Offer the right next action: resume interview / answer pending loop-back / finish S9 generation (if scope locked, bundle incomplete) / run handoff (if bundled) / suggest `add-feature` or `recheck-plan` (if bundled, handoff done).
 4. Resume the current Section exactly where it stopped (micro-batch boundary).
 
 **Never**: skip ahead of scope lock · re-ask answered questions.

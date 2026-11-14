@@ -10,5 +10,5 @@
 - [x] Refusal messages name the right next skill for each case
 - [x] Core boosters checked and installed via cross-harness installer; failure presents the 3 explicit options and journals `booster_choice` (installs simulated in test; live install verified at dogfood)
 - [x] Model tier declared and stored in `model_profile`; capability probe run for T2/T3 (docs/spec/06-model-tiers.md); probe failure refuses with guidance and journals `capability_probe_failed`
-- [ ] S0 record written with verbatim idea + language + slug; journal shows `folder_gate_*`, `booster_*`, `section_start|section_done`
-- [ ] All artifacts English source of truth; interaction in the user's language (ADR-0002)
+- [x] S0 record written with verbatim idea + language + slug; journal shows `folder_gate_*`, `booster_*`, `section_start|section_done` — proven by the dogfood fixture (ticket 09): `S0-intake.md` holds the verbatim idea + slug + display name, state `idea_raw`/`user_language` are verbatim, and the 110-event journal contains the full `folder_gate_*`/`booster_*`/`section_start`/`section_done` chain; re-verified by every rebuild round since (S0 metadata folded byte-equal from the record)
+- [x] All artifacts English source of truth; interaction in the user's language (ADR-0002) — proven at dogfood: interaction transcripts are Bahasa Indonesia while all bundle files and Section Records follow the English artifact rules (conventions §4); rebuild rounds confirmed records keep verbatim User Language answers with English summaries

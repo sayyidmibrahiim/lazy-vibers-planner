@@ -4,7 +4,20 @@
 
 **Blocked by:** none (ticket 16 done — 11/11).
 
-**Status:** ready-for-agent (2026-11-14 — triaged by AI under standing owner authorization "pilih keputusan rekomendasi"; every decision below is a recommendation recorded for owner review on wake-up).
+**Status:** done (2026-11-14) — 9/9 items resolved via two verified rounds under standing owner authorization ("pilih keputusan rekomendasi", recorded as AI recommendations for owner review): round 1 = D17-1..9 (fixer → verifier 9/9 PASS → judge SAFE-TO-COMMIT 5.0/5 → commit `d26eccc`); round 2 = publish-readiness DP-1..5 + micro-residuals + probe pin (fixer + micro-fix → verifier 8/8 PASS + post-verifier scenario V-M PASS → judge SAFE-TO-COMMIT 5.0/5 → commit `dc85586`). Installed copies re-synced and cmp-verified after both rounds.
+
+## Verification round 2 — publish-readiness (2026-11-14)
+
+- Fixer: `README.md` rewritten in English (simple-english register, 127 → 85 lines, both repo halves + per-skill result map + state/rebuild guarantee), `AGENTS.md` parenthetical, `skills/README.md` 2 factual fixes, `skills/lvp-continue/SKILL.md` 3 pins (H1-suffix strip + OVERVIEW-absent loud fallback; 0-byte = missing wherever found; probe source). Micro-round applied the verifier's 4 simple-english rewrites.
+- Verifier: 8/8 checks PASS (`report-publish-round.md`) — D-1 simple-english CHECK (rule numbers quoted from the catalog), D-2 13/13 factual claims traced to sources, D-3 9/9 links resolve, D-4 edits exactly as declared, V-J/V-K/V-L fixture scenarios; post-verifier scenario V-M PASS (probe `skipped` for declared T1 without probe events, `passed` with events).
+- Judge (`ecc:agent-evaluator`): per-axis 5.0/5, zero contradictions with spec 01/04 + conventions §7/§8 + the ticket-16 G1 contract; 4 style notes re-applied and re-verified. **SAFE-TO-COMMIT**.
+
+## Close-out notes (documented limitations, non-blocking)
+
+1. **Legacy journals without q/a payloads** (pre-G1 sessions): 4 fixture answer texts (S0.q1–q3, S4.q14) stay unrecoverable-but-loud — the S0 record template has no `## Answers` block and S4.q14's text lives nowhere on disk. New sessions (post-`67c3897`) journal the q/a text, so the window closes going forward; old sessions keep the loud reconstruction path.
+2. **Anomalous journal case**: a T2/T3 declaration with no probe events violates conventions §7 (probe mandatory there); the rebuild pin only defines T1-without-events (`skipped`). Such journals are defective by construction.
+3. **`build_started`/`build_done` replay arms** remain unexercised (wontfix-for-now; no build-phase fixture).
+4. **Ticket 08's remaining note** ("owner's manual interactive test") stays optional and non-blocking: the machine-equivalent evidence exists (ticket 09 dogfood ran the interactive Folder Gate + S0 + full pipeline; the owner additionally ran a real cross-harness rebuild test on opencode + DeepSeek on 2026-11-14).
 
 ## Triage decisions (2026-11-14)
 
@@ -47,18 +60,18 @@ All nine items triaged as **ready-for-agent** (each is a mechanical text pin, a 
 
 ## From ticket 16 residuals (recorded 2026-11-14)
 
-- [ ] 1. Present-but-empty bundle file semantics in branch c's body: "existing bundle files are skipped" does not define whether a 0-byte file counts as existing or as missing required structure; pin the offer behavior in text (treat as remaining work, per conventions §7's truncation class).
-- [ ] 2. Step 2a repair event mapping: the repair state-write rides the run's `resume` append (no dedicated event type); conventions §3's "every state mutation emits at least one event" holds only under that interpretation — now more visible since G10 makes the repair fire on terminal pristine states.
-- [ ] 3. Build-events row carve-out: add "(status transitions per the row above)" to the informational build-events row in Step 2b to remove the dual-listing ambiguity; the `build_started`→`building` / `build_done`→`complete` replay arms are unexercised (row is a verbatim enum transcription; fixture is pre-build).
-- [ ] 4. Unexercised arm: branch c "bundle absent, S9 never started" (S8 done, status review) — most common real crash; covered by heading text, walk logic identical to V1a minus file checks; deserves a scenario next round.
-- [ ] 5. Minor: `created_at` replay source (ts of `section_start` S0) is used but unstated in the G2 row; the S9-branding rename has no journal event (the S0-record source restores the pre-rename name).
+- [x] 1. Present-but-empty bundle file semantics in branch c's body — FIXED as D17-1 (branch c pin; verifier V-F: 0-byte = missing required structure, offered as remaining work), widened by micro-pin 2 (0-byte = missing wherever found, `doc_generated` row; verifier V-L).
+- [x] 2. Step 2a repair event mapping — FIXED as D17-2 (named interpretation documented in Step 2a; verifier V-G).
+- [x] 3. Build-events row carve-out — FIXED as D17-3 ("(status transitions per the row above)"; verifier V-G). The unexercised `build_started`/`build_done` replay arms remain a documented limitation (no build-phase fixture; wontfix-for-now).
+- [x] 4. Unexercised arm branch c "bundle absent, S9 never started" — EXERCISED as D17-4 (verifier V-A: heading verbatim, offer = 21 §8 files, journal discipline intact).
+- [x] 5. `created_at` + S9-rename sources — FIXED as D17-5 (metadata row: display name from OVERVIEW.md H1 minus template suffix, else S0 record loud fallback; `created_at` from `section_start` S0 ts; init S9 renames before compiling; verifier V-D + V-J).
 
 ## From the G1/G3 judge nits (2026-11-14)
 
-- [ ] 6. Wording tension (pre-existing, outside the G1/G3 diff): `skills/lvp-init-new-idea/SKILL.md` loop-back closure updates "(and the recorded state answers)" while the G1 decision rationale says "state and journal keep the original capture" (fixture evidence: state stores the original capture; records get mutated inline). Reconcile or scope the sentence.
-- [ ] 7. Cosmetic: `skills/lvp-continue/SKILL.md` "the mirror is maintained through loop-back mutations" can be misread against spec 04's "DECISIONS.md rows are never rewritten" (which governs the post-bundle phase); the mirror is compiled at S9 from post-loop-back records. Tighten wording.
+- [x] 6. Init loop-back closure tension — FIXED as D17-6 (records-only reconcile; state answers keep capture-time text; verifier V-E, `grep "recorded state answers"` = 0 repo-wide).
+- [x] 7. Mirror wording misreading — FIXED as D17-7 ("compiled at S9 from the post-loop-back records; rows are never rewritten after S9 (spec 04)"; verifier V-G).
 
 ## From the owner's wild rebuild run (opencode + DeepSeek, 2026-11-14)
 
-- [ ] 8. Booster status interpretation lottery: the Step 2b booster row maps journaled `present` → `installed` (the only enum-legal mapping), but a live model read OVERVIEW.md Limitations + CAPABILITIES.md context and reported all 9 boosters as `degraded`. Same journal, different verdicts across implementations. Consider pinning the status mapping explicitly and/or defining what evidence may override a journaled status.
-- [ ] 9. The wild run wrote `.lvp/state.corrupt-<date>.json` before overwriting state — unsanctioned by skill text (surgical-changes principle), sensible as a safeguard. Decide: codify as optional/standard behavior, or forbid to keep the write surface exact.
+- [x] 8. Booster status interpretation lottery — FIXED as D17-8 (journaled status wins; `present` → `installed` pinned; bundle docs add loud context only; verifier V-B incl. journal-wins edge, rebuilt state byte-identical `d48691d1…`).
+- [x] 9. Corrupt-state backup — DECIDED + codified as D17-9 (optional `.lvp/state.corrupt-<date>.json`, non-canonical write, named in the reconstruction report; verifier V-C both arms).
